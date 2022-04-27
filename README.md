@@ -1,19 +1,28 @@
 # degu-lib
-stealth userland kit that doesn't use sys_clone/sys_execve call 
+DEGU is a stealth userland kit that doesn't use sys_clone/sys_execve call to run.
 
 This software is an userland rootkit that can't be easily spotted by volatility and
 conventionnal anti rootkit tools.
 
-Actually it works only on 3.17+ linux kernel to keep real in-memory execution with memfd and execveat.
+Actually it works on 3.17+ linux kernel to keep real in-memory execution with memfd and execveat, 
+for lower kernels it fallback with tmpfs and fexecve.
+
+It's an "autorelocatable" executable library (see p2s/pie2so.c for magical trick), and use signal 
+to get execution inside parasited process without a fork, a thread or function hooking.
+
+It can bypass netfilter settings for unidirectionnal command, and use ed25519 library to sign messages from client 
+and exchange keys for AES session.
 
 ### BUILD DEBUG:
 ```
+git submodule update --init
 make clean && make
 ```
 debug mode activate log in /tmp/debug file
 
 ### BUILD PROD:
 ```
+git submodule update --init
 make clean && PROD=yes make
 ```
 ### USAGE:
@@ -23,7 +32,8 @@ make clean && PROD=yes make
 ```
 ### remake keys.h
 
-it's preferable to change keys.h using python script dgu ( see degu-client repository )
+it's preferable to change keys.h using python script dgu 
+( see [degu-client](https://github.com/io-tl/degu-client) repository )
 
 ```
 $ dgu keygen
