@@ -50,4 +50,4 @@ or just :
 $ dgu keygen > keys.h && make clean && PROD=yes make
 ```
 
-
+[![asciicast](https://asciinema.org/a/490680.svg)](https://asciinema.org/a/490680)
