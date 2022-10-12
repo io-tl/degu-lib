@@ -52,4 +52,3 @@ int __wrap_stat(const char *restrict path,struct stat *restrict buf) {
 int __wrap_regexec(void * preg, const char *restrict string, size_t nmatch, void *p , int eflags){
     return regexec(preg,string,nmatch,p,eflags);
 }
-

