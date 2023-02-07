@@ -73,6 +73,9 @@ DEGU_FUNC_EXPORT int xbuf(unsigned char *destkey,unsigned char *privkey, unsigne
 }
 
 
+DEGU_FUNC_EXPORT void xpub(unsigned char *destkey,unsigned char *privkey){
+    ed25519_getpub(destkey,privkey);
+}
 
 DEGU_FUNC_EXPORT void keygen(char* path){
 
