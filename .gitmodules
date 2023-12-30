@@ -1,3 +1,6 @@
 [submodule "injector"]
 	path = injector
 	url = https://github.com/kubo/injector
+[submodule "degu-client"]
+	path = degu-client
+	url = git@github.com:io-tl/degu-client.git

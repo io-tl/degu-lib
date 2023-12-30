@@ -6,12 +6,13 @@ BIN=degu.pie
 all: degu
 
 degu: $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -pie -o ../$(BIN) ../crypto/degucrypto.a ../injector/src/linux/libinjector.a 
+	@$(CC) $(LDFLAGS) $(OBJS) -pie -o ../$(BIN) ../crypto/degucrypto.a ../injector/src/linux/libinjector.a ../ulexec/ulexe.a
 
 %.o : %.c
-	$(CC) $(CFLAGS) -c $<
+	@echo CC $<
+	@$(CC) $(CFLAGS) -c $<
 
 clean:
-	$(RM) -f *.o 
-	
+	@$(RM) -f *.o 
+
 

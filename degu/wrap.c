@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <sys/syscall.h>
 #include <sys/stat.h>
+#include <sys/auxv.h>
 
 asm (".symver memcpy, memcpy@GLIBC_2.2.5");
 asm (".symver realpath, realpath@GLIBC_2.2.5");
@@ -16,6 +17,7 @@ asm (".symver vsscanf, vsscanf@GLIBC_2.2.5");
 asm (".symver __isoc99_vsscanf, vsscanf@GLIBC_2.2.5");
 asm (".symver __libc_start_main, __libc_start_main@GLIBC_2.2.5");
 asm (".symver regexec, regexec@GLIBC_2.2.5");
+//asm (".symver getauxval, getauxval@GLIBC_2.16");
 
 int __libc_start_main(int *main, int argc, char ** ubp_av, void *init, void *fini , void *rtld_fini, void *stack_end);
 
@@ -52,3 +54,8 @@ int __wrap_stat(const char *restrict path,struct stat *restrict buf) {
 int __wrap_regexec(void * preg, const char *restrict string, size_t nmatch, void *p , int eflags){
     return regexec(preg,string,nmatch,p,eflags);
 }
+/**
+unsigned long __wrap_getauxval(unsigned long type){
+    return getauxval(type);
+}
+**/

