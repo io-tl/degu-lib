@@ -133,6 +133,9 @@ def ssh_keygen(regen = False) -> None:
     if regen:
         ex([f"rm -rf {sshkeys_path}/keydegussh {sshkeys_path}/keydegussh.pub {sshkeys_path}/hostkey {sshkeys_path}/hostkey.pub "])
 
+    if not os.path.exists(f"{sshkeys_path}"):
+        os.mkdir(f"{sshkeys_path}", 0o700)
+
     if not os.path.exists(f"{sshkeys_path}/keydegussh"):
         log.debug("generating ssh key")
         ex([f'ssh-keygen -t ed25519  -f {sshkeys_path}/keydegussh -N "" -C ""'])
