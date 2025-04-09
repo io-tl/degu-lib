@@ -28,11 +28,11 @@ int inject(int pid,char *dso) {
     
     if (injector_attach(&injector, pid) != 0) {
         fprintf(stderr, "%i 3<\n",pid);
-        return -1001;
+        return -101;
     }
 	if (!injector_inject(injector, dso, NULL) == 0) {
 		fprintf(stderr, "%s :(\n",dso);
-		return -1002;
+		return -102;
 	}
 	return 0;
 }

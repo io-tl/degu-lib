@@ -1,4 +1,11 @@
 *.o
 *.so
 *.a
+.vscode
+.gdb_history
+*.pyc
+__pycache__
 TODO
+degu-client/helpers/ssh/keys/*
+degu-client/helpers/pty
+.env

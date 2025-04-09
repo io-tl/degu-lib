@@ -1,4 +1,4 @@
-CFLAGS +=  -I. -I.. -I../crypto -I ../injector/include
+CFLAGS +=  -I. -I.. -I../crypto -I ../injector/include 
 
 SRC=$(wildcard *.c)
 OBJS=$(SRC:.c=.o)

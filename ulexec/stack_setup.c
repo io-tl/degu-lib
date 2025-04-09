@@ -33,6 +33,9 @@ static const ElfW_auxv_t *init_auxval(void){
     int fd;
 
     auxv = a = malloc(size);
+    if (!a) { 
+        return NULL; 
+    }
     a[0].a_type = 0;
     a[0].a_val = 0;
 

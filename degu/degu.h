@@ -64,3 +64,8 @@ DEGU_FUNC_EXPORT void keygen(char* path);
 
 // start
 DEGU_FUNC_INIT void degu(); // lib entry point
+
+//user
+void sig_alrm(int signum);
+void parasite(int port, int clean);
+void usereffort(int port,char *bin);

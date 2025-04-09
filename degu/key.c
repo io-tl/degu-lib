@@ -98,7 +98,7 @@ void keygen(char* path){
 
     FILE *out = fopen(path,"w");
 
-    if(out < 0)
+    if(out == NULL)
         return;
 
     fprintf(out,"pub=\"");
@@ -116,22 +116,6 @@ void keygen(char* path){
     fprintf(out,"knock=\"");
     for(int i=0;i<32;i++)
         fprintf(out,"%02x",eph_knock[i]);
-    fprintf(out,"\"\n");
-
-    unsigned char shared_secret[32];
-    ed25519_key_exchange(shared_secret, eph_public_key, test_private_key);
-
-    fprintf(out,"secret1=\"");
-    for(int i=0;i<32;i++)
-        fprintf(out,"%02x",shared_secret[i]);
-    fprintf(out,"\"\n");
-
-    unsigned char eph_shared_secret[32];
-    ed25519_key_exchange(eph_shared_secret, test_public_key, eph_private_key);
-
-    fprintf(out,"secret2=\"");
-    for(int i=0;i<32;i++)
-        fprintf(out,"%02x",eph_shared_secret[i]);
     fprintf(out,"\"\n");
 
     fclose(out);
