@@ -5,6 +5,18 @@
   <img src="https://raw.githubusercontent.com/io-tl/degu-lib/refs/heads/main/degu.png">
 </p>
 
+  * [Overview](#overview)
+  * [Requirements](#requirements)
+  * [Quick Start](#quick-start)
+  * [Technical Architecture](#technical-architecture)
+  * [Usage](#usage)
+  * [Building](#building)
+  * [Troubleshooting](#troubleshooting)
+  * [Debugging](#debugging)
+  * [Container Considerations](#container-considerations)
+  * [Client API](#client-api)
+
+
 ## Overview
 
 DEGU is a sophisticated stealth userland kit designed for covert operation for red teaming without requiring sys_clone/sys_execve calls as root. Developed primarily for red team operations, it enables persistent access to compromised assets while evading common detection mechanisms.
@@ -58,8 +70,6 @@ As root, DEGU can inject into existing processes using ptrace and wait for activ
 # Alternative: Use LD_PRELOAD (spawns a visible process)
 LD_PRELOAD=/root/degu.dbg.so /bin/ls
 ```
-
-#### Candidate Process Configuration
 
 You can edit the list of candidate processes in `degu/main.c`:
 
@@ -139,7 +149,7 @@ Be cautious when using in containerized environments, as ptrace syscalls may be 
 
 In such cases, consider using the LD_PRELOAD method instead.
 
-## Client & API
+## Client API
 
 For documentation on client usage and API functionality, see the separate client README.md.
 
